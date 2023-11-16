@@ -2,5 +2,7 @@
 env
 __*
 
-# .gitignore
-ARCHIVOS/
+
+ARCHIVOS
+ARCHIVOS
+__*
