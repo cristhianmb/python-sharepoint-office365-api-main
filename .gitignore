@@ -1,3 +1,6 @@
 .env
 env
 __*
+
+# .gitignore
+ARCHIVOS/
