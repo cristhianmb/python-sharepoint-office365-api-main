@@ -1,8 +1,2 @@
-.env
-env
-__*
-
-
-ARCHIVOS
-ARCHIVOS
-__*
+ARCHIVOS/
+.env/
