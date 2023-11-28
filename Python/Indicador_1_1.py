@@ -12,7 +12,11 @@ def Indicador_1_1(df_hoja1, df_hoja2):
     IPC = 7.36 / 100
     #df_combinado6['indicador_1_1'] = df_combinado6['promedio'] * (1 + IPC)  
     df_combinado6['Saldo_de_la_Cartera_de_crédito_con_riesgo_de_crédito_etapa'] = df_combinado6['Saldo_de_la_Cartera_de_crédito_con_riesgo_de_crédito_etapa'] * (1 + IPC)  
-
+    
+    
+    # Eliminación de columnas sobrantes
+    columna_eliminar = ['concepto']
+    df_combinado6=df_combinado6.drop(columna_eliminar,axis = 1)
     
 
     return df_combinado6

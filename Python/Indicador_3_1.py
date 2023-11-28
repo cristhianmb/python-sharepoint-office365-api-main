@@ -1,3 +1,4 @@
+#Número de Contratos de crédito - Vivienda
 import pandas as pd
 
 def Indicador_3_1(df_hoja3_1, df_hoja2):
@@ -12,7 +13,7 @@ def Indicador_3_1(df_hoja3_1, df_hoja2):
        
        # Agrupar y agregar según tus necesidades
    df_combinado21 = df_combinado21.groupby(['nombreinstitucion', 'cve_periodo', 'cve_moneda']).agg(
-         operaciones=('dat_id_credito_met_cnbv', 'sum')
+         Número_de_Contratos_de_crédito_Vivienda=('dat_id_credito_met_cnbv', 'sum')
        ).reset_index()
 
    df_combinado21 = df_combinado21[(df_combinado21['cve_moneda'] == 99)&(df_combinado21['cve_periodo'] == 2022)]   

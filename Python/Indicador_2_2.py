@@ -8,6 +8,12 @@ def Indicador_2_2(df_hoja1, hoja2_1):
     df_combinado12 = df_combinado12[df_combinado12['concepto'] == 500200102009]
     
     
+    
+    
+    # Eliminación de columnas sobrantes
+    columna_eliminar = ['concepto']
+    df_combinado12=df_combinado12.drop(columna_eliminar,axis = 1)
+    
     return df_combinado12
 
 

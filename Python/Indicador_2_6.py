@@ -8,5 +8,11 @@ def Indicador_2_6(df_hoja1, hoja2_1):
     df_combinado16 = df_combinado16[df_combinado16['concepto'] == 600800201004]
     
     
+    
+    # Eliminaci—n de columnas sobrantes
+    columna_eliminar = ['concepto']
+    df_combinado16=df_combinado16.drop(columna_eliminar,axis = 1)
+    
+    
     return df_combinado16
 

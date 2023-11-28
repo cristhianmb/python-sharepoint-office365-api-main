@@ -12,6 +12,10 @@ def Indicador_1_5(df_hoja1, df_hoja2):
     IPC = 7.36 / 100
     #df_combinado10['indicador_1_1'] = df_combinado10['promedio'] * (1 + IPC)  
     df_combinado10['Saldo_de_la_Captación_Total'] = df_combinado10['Saldo_de_la_Captación_Total'] * (1 + IPC)  
-
-
+    
+    
+    # Eliminación de columnas sobrantes
+    columna_eliminar = ['concepto']
+    df_combinado10=df_combinado10.drop(columna_eliminar,axis = 1)
+    
     return df_combinado10
