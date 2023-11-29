@@ -18,8 +18,6 @@ def Indicador_3_1(df_hoja3_1, df_hoja2):
 
    df_combinado21 = df_combinado21[(df_combinado21['cve_moneda'] == 99)&(df_combinado21['cve_periodo'] == 2022)]   
 
-   columna_eliminar = ['cve_periodo','cve_moneda']
-
-   df_combinado21=df_combinado21.drop(columna_eliminar,axis = 1)
+    
    
    return df_combinado21

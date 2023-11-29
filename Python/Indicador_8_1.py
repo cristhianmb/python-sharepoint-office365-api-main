@@ -12,6 +12,10 @@ def Indicador_8_1(df_hoja8_1, df_hoja2):
     # Combinar DataFrames en 'institucion' y 'claveinstitucion'
     df_combinado26 = pd.merge(df_hoja2[['nombreinstitucion', 'claveinstitucion']], df8[['Periodo_seguimiento', 'Institución', 'Créditos']], how='left', left_on='nombreinstitucion', right_on='Institución')
 
+    # Eliminar las columnas no deseadas
+    columnas_a_eliminar = ['cve_periodo', 'dat_id_credito_met_cnbv', 'cve_moneda']
+    df_combinado26 = df_combinado26.drop(columnas_a_eliminar, axis=1, errors='ignore')
+
     # Agrupar y agregar según tus necesidades
     df_combinado26 = df_combinado26.groupby(['nombreinstitucion', 'Periodo_seguimiento', 'Créditos']).agg(
         Número_de_Contratos_de_crédito_Empresas=('Créditos', 'sum')

@@ -24,6 +24,12 @@ from Indicador_5_1 import Indicador_5_1
 from Indicador_6_1 import Indicador_6_1
 from Indicador_7_1 import Indicador_7_1
 from Indicador_8_1 import Indicador_8_1
+from Indicador_9_1 import Indicador_9_1
+from Indicador_10_1 import Indicador_10_1
+from Indicador_10_2 import Indicador_10_2
+from Indicador_10_3 import Indicador_10_3
+from Indicador_10_4 import Indicador_10_4
+from Indicador_10_5 import Indicador_10_5
 
 
 
@@ -55,7 +61,7 @@ hoja1 = '040_R12A_1219_133'
 hoja2 = 'catalogo_instituciones_BM'
 # Nombre de las hojas que deseas cargar del archivo 040_R12A_1220_133.xlsx
 hoja2_1 = '040_R12A_1220_133'
-# Nombre de las hojas que deseas cargar del archivo 040_11A_2022_Empresas_2022.xlsx
+# Nombre de las hojas que deseas cargar del archivo 040_11A_2022_vivienda_2022.xlsx
 hoja3_1 = 'Hoja3_1'
 # Nombre de las hojas que deseas cargar del archivo 040_30B_R2_Nómina.xlsx
 hoja4_1 = 'Hoja4_1'
@@ -119,10 +125,12 @@ df_combinado23 = Indicador_5_1(df_hoja5_1, df_hoja2)
 df_combinado24 = Indicador_6_1(df_hoja6_1, df_hoja2)
 df_combinado25 = Indicador_7_1(df_hoja7_1, df_hoja2)
 df_combinado26 = Indicador_8_1(df_hoja8_1, df_hoja2)
-
-
-
-
+df_combinado27 = Indicador_9_1(df_hoja3_1, df_hoja2)
+df_combinado28 = Indicador_10_1(df_hoja4_1, df_hoja2)
+df_combinado29 = Indicador_10_2(df_hoja5_1, df_hoja2)
+df_combinado30 = Indicador_10_3(df_hoja6_1, df_hoja2)
+df_combinado31 = Indicador_10_4(df_hoja7_1, df_hoja2)
+df_combinado32 = Indicador_10_5(df_hoja8_1, df_hoja2)
 
 
 
@@ -131,8 +139,11 @@ df_combinado26 = Indicador_8_1(df_hoja8_1, df_hoja2)
   
 
 
+
+
+
 # Concatenar los DataFrames en filas en una sola tabla
-result = pd.concat([df_combinado1.set_index('nombreinstitucion'), df_combinado2.set_index('nombreinstitucion'), df_combinado3.set_index('nombreinstitucion'), df_combinado4.set_index('nombreinstitucion'), df_combinado5.set_index('nombreinstitucion'), df_combinado6.set_index('nombreinstitucion'), df_combinado7.set_index('nombreinstitucion'), df_combinado8.set_index('nombreinstitucion'), df_combinado9.set_index('nombreinstitucion'), df_combinado10.set_index('nombreinstitucion'), df_combinado11.set_index('nombreinstitucion'), df_combinado12.set_index('nombreinstitucion'), df_combinado13.set_index('nombreinstitucion'), df_combinado14.set_index('nombreinstitucion'), df_combinado15.set_index('nombreinstitucion'), df_combinado16.set_index('nombreinstitucion'), df_combinado17.set_index('nombreinstitucion'), df_combinado18.set_index('nombreinstitucion'), df_combinado19.set_index('nombreinstitucion'), df_combinado20.set_index('nombreinstitucion'), df_combinado21.set_index('nombreinstitucion'), df_combinado22.set_index('nombreinstitucion'), df_combinado23.set_index('nombreinstitucion'), df_combinado24.set_index('nombreinstitucion'), df_combinado25.set_index('nombreinstitucion'), df_combinado26.set_index('nombreinstitucion')], axis=1)
+result = pd.concat([df_combinado1.set_index('nombreinstitucion'), df_combinado2.set_index('nombreinstitucion'), df_combinado3.set_index('nombreinstitucion'), df_combinado4.set_index('nombreinstitucion'), df_combinado5.set_index('nombreinstitucion'), df_combinado6.set_index('nombreinstitucion'), df_combinado7.set_index('nombreinstitucion'), df_combinado8.set_index('nombreinstitucion'), df_combinado9.set_index('nombreinstitucion'), df_combinado10.set_index('nombreinstitucion'), df_combinado11.set_index('nombreinstitucion'), df_combinado12.set_index('nombreinstitucion'), df_combinado13.set_index('nombreinstitucion'), df_combinado14.set_index('nombreinstitucion'), df_combinado15.set_index('nombreinstitucion'), df_combinado16.set_index('nombreinstitucion'), df_combinado17.set_index('nombreinstitucion'), df_combinado18.set_index('nombreinstitucion'), df_combinado19.set_index('nombreinstitucion'), df_combinado20.set_index('nombreinstitucion'), df_combinado21.set_index('nombreinstitucion'), df_combinado22.set_index('nombreinstitucion'), df_combinado23.set_index('nombreinstitucion'), df_combinado24.set_index('nombreinstitucion'), df_combinado25.set_index('nombreinstitucion'), df_combinado26.set_index('nombreinstitucion'), df_combinado27.set_index('nombreinstitucion'), df_combinado28.set_index('nombreinstitucion'), df_combinado29.set_index('nombreinstitucion'), df_combinado30.set_index('nombreinstitucion'), df_combinado31.set_index('nombreinstitucion'), df_combinado32.set_index('nombreinstitucion')], axis=1)
 
 # Guardar el DataFrame concatenado en un archivo Excel
 result.to_excel(r"C:\Users\crist\OneDrive\Documentos\Cristhian\Cristhian\CRISS\Allcot\DocumentosProyectos\python-sharepoint-office365-api-main\ARCHIVOS\Anexo IEB\MergeTotal\MergeTotal.xlsx", sheet_name='pag', engine = 'openpyxl')
