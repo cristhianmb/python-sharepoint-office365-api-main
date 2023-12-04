@@ -1,3 +1,4 @@
+# Número de Contratos de crédito - Empresas - 2021
 import pandas as pd
 
 def Indicador_10_5(df_hoja8_1, df_hoja2):
