@@ -1,4 +1,6 @@
 import pandas as pd
+import csv
+
 
 from Indicador_1 import Indicador_1
 from Indicador_2 import Indicador_2
@@ -91,6 +93,18 @@ from Indicador_18_9 import Indicador_18_9
 from Indicador_18_10 import Indicador_18_10
 from Indicador_18_11 import Indicador_18_11
 from Indicador_18_12 import Indicador_18_12
+from Indicador_19_1 import Indicador_19_1
+from Indicador_19_2 import Indicador_19_2
+from Indicador_19_3 import Indicador_19_3
+from Indicador_19_4 import Indicador_19_4
+from Indicador_19_5 import Indicador_19_5
+from Indicador_19_6 import Indicador_19_6
+from Indicador_19_7 import Indicador_19_7
+from Indicador_19_8 import Indicador_19_8
+
+
+
+
 
 
 
@@ -116,11 +130,11 @@ ruta_archivo_excel7 = r"C:\Users\crist\OneDrive\Documentos\Cristhian\Cristhian\C
 ruta_archivo_excel8 = r"C:\Users\crist\OneDrive\Documentos\Cristhian\Cristhian\CRISS\Allcot\DocumentosProyectos\python-sharepoint-office365-api-main\ARCHIVOS\Anexo IEB\Reportes\040-11A_2022_Empresas_2022.xlsx"
 ruta_archivo_excel9 = r"C:\Users\crist\OneDrive\Documentos\Cristhian\Cristhian\CRISS\Allcot\DocumentosProyectos\python-sharepoint-office365-api-main\ARCHIVOS\Anexo IEB\Reportes\040_11V_Empresas_2022.xlsx"
 ruta_archivo_excel10 = r"C:\Users\crist\OneDrive\Documentos\Cristhian\Cristhian\CRISS\Allcot\DocumentosProyectos\python-sharepoint-office365-api-main\ARCHIVOS\Anexo IEB\Reportes\040_4A_R12_2022.xlsx"
+ruta_archivo_excel11 = r"C:\Users\crist\OneDrive\Documentos\Cristhian\Cristhian\CRISS\Allcot\DocumentosProyectos\python-sharepoint-office365-api-main\ARCHIVOS\Anexo IEB\Reportes\2441 SISECO\(Información General sobre el uso de Servicios Financieros)_202212.xlsx"
+
 #ruta_archivo_excel6 = r"C:\Users\crist\OneDrive\Documentos\Cristhian\Cristhian\CRISS\Allcot\DocumentosProyectos\python-sharepoint-office365-api-main\ARCHIVOS\Anexo IEB\Reportes\040_30B_R2_Nómina.xlsx"
 #ruta_archivo_excel8 = r"C:\Users\crist\OneDrive\Documentos\Cristhian\Cristhian\CRISS\Allcot\DocumentosProyectos\python-sharepoint-office365-api-main\ARCHIVOS\Anexo IEB\Reportes\040_32B_R2_ABCD.xlsx"
 #ruta_archivo_excel9 = r"C:\Users\crist\OneDrive\Documentos\Cristhian\Cristhian\CRISS\Allcot\DocumentosProyectos\python-sharepoint-office365-api-main\ARCHIVOS\Anexo IEB\Reportes\040_33B_R2_Personales.xlsx"
-
-
 
 
 
@@ -148,7 +162,8 @@ hoja8_1 = 'MD2_Emp_PETOT.InformacionGenera'
 hoja9_1 = 'Tamaño de empresa lugar de otor'
 #  Nombre de las hojas que deseas cargar del archivo 040_4A_R12_2022.xlsx
 hoja10_1 = 'No_contratos'
-
+#  Nombre de las hojas que deseas cargar del archivo [Información General sobre el uso de Servicios Financieros]_202212.txt
+hoja11_1 = '(Información General sobre el u'
 
 
 
@@ -166,6 +181,20 @@ df_hoja7_1 = pd.read_excel(ruta_archivo_excel7, sheet_name=hoja7_1)
 df_hoja8_1 = pd.read_excel(ruta_archivo_excel8, sheet_name=hoja8_1)
 df_hoja9_1 = pd.read_excel(ruta_archivo_excel9, sheet_name=hoja9_1)
 df_hoja10_1 = pd.read_excel(ruta_archivo_excel10, sheet_name=hoja10_1)
+
+df_hoja11_1 = pd.read_excel(ruta_archivo_excel11, sheet_name=hoja11_1, header=None)
+# Elimina la primera fila del DataFrame y resetea los índices
+df_hoja11_1 = df_hoja11_1.iloc[0:].reset_index(drop=True)
+# Usa la segunda fila como encabezado de las columnas
+df_hoja11_1.columns = df_hoja11_1.iloc[0]
+# Elimina la segunda fila, ya que ahora es el encabezado
+df_hoja11_1 = df_hoja11_1.iloc[1:]
+
+
+
+
+
+
 
 
 
@@ -264,14 +293,14 @@ df_combinado89 = Indicador_18_9(df_combinado79, df_hoja2_1, df_hoja2)
 df_combinado90 = Indicador_18_10(df_combinado80, df_hoja2_1, df_hoja2)
 df_combinado91 = Indicador_18_11(df_hoja2_1, df_hoja2)
 df_combinado92 = Indicador_18_12(df_combinado91, df_hoja2_1, df_hoja2)
-
-
-
-
-
-
-
-
+df_combinado93 = Indicador_19_1(df_hoja11_1, df_hoja2_1, df_hoja2)
+df_combinado94 = Indicador_19_2(df_hoja11_1, df_hoja2_1, df_hoja2)
+df_combinado95 = Indicador_19_3(df_hoja11_1, df_hoja2_1, df_hoja2)
+df_combinado96 = Indicador_19_4(df_hoja11_1, df_hoja2_1, df_hoja2)
+df_combinado97 = Indicador_19_5(df_hoja11_1, df_hoja2_1, df_hoja2)
+df_combinado98 = Indicador_19_6(df_hoja11_1, df_hoja2_1, df_hoja2)
+df_combinado99 = Indicador_19_7(df_hoja11_1, df_hoja2_1, df_hoja2)
+df_combinado100 = Indicador_19_8(df_hoja11_1, df_hoja2_1, df_hoja2)
 
 
 
@@ -326,34 +355,27 @@ df_combinado92['Saldo_del_Resultado_por_compraventa_de_divisas'] = (
 
 #------------------------------------------------------------------------------------
 #Codigo de prueba con calculos ya utilizados en el programa
-df39 = df_hoja2_1.copy()
+df69 = df_hoja11_1.copy()
 
 
-# Eliminar los dos últimos dígitos numéricos en la columna 'cve_periodo'
-df38['cve_periodo'] = df38['cve_periodo'] // 100
+# Eliminar los dos últimos dígitos numéricos en la columna 'Año'
+df69['Column1'] = df69['Column1'] // 100
 # Combinar DataFrames en 'institucion' y 'claveinstitucion'
-df_combinado56 = pd.merge(df_hoja2[['nombreinstitucion', 'claveinstitucion']], df38[['dat_unidades', 'cve_periodo', 'cve_institucion']], how='left', left_on='claveinstitucion', right_on='cve_institucion')
+df_combinado101 = pd.merge(df_hoja2[['nombreinstitucion', 'claveinstitucion']], df69[['Column1','Column4', 'Column10']], how='left', left_on='claveinstitucion', right_on='Column4')
 
 # Agrupar y agregar según tus necesidades
-df_combinado56 = df_combinado56.groupby(['nombreinstitucion', 'claveinstitucion', 'cve_periodo', 'dat_unidades']).agg(
-    Número_de_Contratos_de_Captación
-=('dat_unidades', 'sum')
+df_combinado101 = df_combinado101.groupby(['nombreinstitucion', 'claveinstitucion', 'Column10', 'Column1']).agg(
+    numero_de_Corresponsales
+=('Column10', 'count')
 ).reset_index()
 
 # Filtrar por el periodo deseado (2022)
-df_combinado56 = df_combinado56[df_combinado56['cve_periodo'] == 2021]
-
- # Realizar la agregación sin repetir los valores de 'nombreinstitucion'
- df_combinado56 = df_combinado56.groupby('nombreinstitucion').agg(
-     Número_de_Contratos_de_Captación=('Número_de_Contratos_de_Captación', 'sum')
- ).reset_index()
-
-
-
+df_combinado101 = df_combinado101[df_combinado101['Column1'] == 2021]
+df_combinado101 = df_combinado101[df_combinado101['Column10'] == 'Comisionistas']
 
 # Eliminación de columnas sobrantes
-columna_eliminar = ['concepto', 'claveinstitucion']
-df_combinado55 = df_combinado55.drop(columna_eliminar, axis=1)
+columna_eliminar = ['Column10', 'claveinstitucion', 'Column1']
+df_combinado101 = df_combinado101.drop(columna_eliminar, axis=1)
 
 
 
@@ -368,7 +390,120 @@ df_combinado55 = df_combinado55.drop(columna_eliminar, axis=1)
 
 
 # Concatenar los DataFrames en filas en una sola tabla
-result = pd.concat([df_combinado1.set_index('nombreinstitucion'), df_combinado2.set_index('nombreinstitucion'), df_combinado3.set_index('nombreinstitucion'), df_combinado4.set_index('nombreinstitucion'), df_combinado5.set_index('nombreinstitucion'), df_combinado6.set_index('nombreinstitucion'), df_combinado7.set_index('nombreinstitucion'), df_combinado8.set_index('nombreinstitucion'), df_combinado9.set_index('nombreinstitucion'), df_combinado10.set_index('nombreinstitucion'), df_combinado11.set_index('nombreinstitucion'), df_combinado12.set_index('nombreinstitucion'), df_combinado13.set_index('nombreinstitucion'), df_combinado14.set_index('nombreinstitucion'), df_combinado15.set_index('nombreinstitucion'), df_combinado16.set_index('nombreinstitucion'), df_combinado17.set_index('nombreinstitucion'), df_combinado18.set_index('nombreinstitucion'), df_combinado19.set_index('nombreinstitucion'), df_combinado20.set_index('nombreinstitucion'), df_combinado21.set_index('nombreinstitucion'), df_combinado22.set_index('nombreinstitucion'), df_combinado23.set_index('nombreinstitucion'), df_combinado24.set_index('nombreinstitucion'), df_combinado25.set_index('nombreinstitucion'), df_combinado26.set_index('nombreinstitucion'), df_combinado27.set_index('nombreinstitucion'), df_combinado28.set_index('nombreinstitucion'), df_combinado29.set_index('nombreinstitucion'), df_combinado30.set_index('nombreinstitucion'), df_combinado31.set_index('nombreinstitucion'), df_combinado32.set_index('nombreinstitucion'), df_combinado33.set_index('nombreinstitucion'), df_combinado34.set_index('nombreinstitucion'),  df_combinado35.set_index('nombreinstitucion'), df_combinado36.set_index('nombreinstitucion'), df_combinado37.set_index('nombreinstitucion'), df_combinado38.set_index('nombreinstitucion'), df_combinado39.set_index('nombreinstitucion'), df_combinado40.set_index('nombreinstitucion'), df_combinado41.set_index('nombreinstitucion'), df_combinado42.set_index('nombreinstitucion'), df_combinado43.set_index('nombreinstitucion'), df_combinado44.set_index('nombreinstitucion'), df_combinado45.set_index('nombreinstitucion'), df_combinado46.set_index('nombreinstitucion'), df_combinado47.set_index('nombreinstitucion'), df_combinado48.set_index('nombreinstitucion'), df_combinado49.set_index('nombreinstitucion'), df_combinado50.set_index('nombreinstitucion'), df_combinado51.set_index('nombreinstitucion'), df_combinado52.set_index('nombreinstitucion'), df_combinado53.set_index('nombreinstitucion'), df_combinado54.set_index('nombreinstitucion'), df_combinado55.set_index('nombreinstitucion'), df_combinado56.set_index('nombreinstitucion'), df_combinado57.set_index('nombreinstitucion'), df_combinado58.set_index('nombreinstitucion'), df_combinado59.set_index('nombreinstitucion'), df_combinado60.set_index('nombreinstitucion'), df_combinado61.set_index('nombreinstitucion'), df_combinado62.set_index('nombreinstitucion'), df_combinado63.set_index('nombreinstitucion'), df_combinado64.set_index('nombreinstitucion'), df_combinado65.set_index('nombreinstitucion'), df_combinado66.set_index('nombreinstitucion'), df_combinado67.set_index('nombreinstitucion'), df_combinado68.set_index('nombreinstitucion'), df_combinado69.set_index('nombreinstitucion'), df_combinado70.set_index('nombreinstitucion'), df_combinado71.set_index('nombreinstitucion'), df_combinado72.set_index('nombreinstitucion'), df_combinado73.set_index('nombreinstitucion'), df_combinado74.set_index('nombreinstitucion'), df_combinado75.set_index('nombreinstitucion'), df_combinado76.set_index('nombreinstitucion'), df_combinado77.set_index('nombreinstitucion'), df_combinado78.set_index('nombreinstitucion'), df_combinado79.set_index('nombreinstitucion'), df_combinado80.set_index('nombreinstitucion'), df_combinado81.set_index('nombreinstitucion'), df_combinado82.set_index('nombreinstitucion'), df_combinado83.set_index('nombreinstitucion'), df_combinado84.set_index('nombreinstitucion'), df_combinado85.set_index('nombreinstitucion'), df_combinado86.set_index('nombreinstitucion'), df_combinado87.set_index('nombreinstitucion'), df_combinado88.set_index('nombreinstitucion'), df_combinado89.set_index('nombreinstitucion'), df_combinado90.set_index('nombreinstitucion'), df_combinado91.set_index('nombreinstitucion'), df_combinado92.set_index('nombreinstitucion')], axis=1)
+#result = pd.concat([df_combinado1.set_index('nombreinstitucion'), df_combinado2.set_index('nombreinstitucion'), df_combinado3.set_index('nombreinstitucion'), df_combinado4.set_index('nombreinstitucion'), df_combinado5.set_index('nombreinstitucion'), df_combinado6.set_index('nombreinstitucion'), df_combinado7.set_index('nombreinstitucion'), df_combinado8.set_index('nombreinstitucion'), df_combinado9.set_index('nombreinstitucion'), df_combinado10.set_index('nombreinstitucion'), df_combinado11.set_index('nombreinstitucion'), df_combinado12.set_index('nombreinstitucion'), df_combinado13.set_index('nombreinstitucion'), df_combinado14.set_index('nombreinstitucion'), df_combinado15.set_index('nombreinstitucion'), df_combinado16.set_index('nombreinstitucion'), df_combinado17.set_index('nombreinstitucion'), df_combinado18.set_index('nombreinstitucion'), df_combinado19.set_index('nombreinstitucion'), df_combinado20.set_index('nombreinstitucion'), df_combinado21.set_index('nombreinstitucion'), df_combinado22.set_index('nombreinstitucion'), df_combinado23.set_index('nombreinstitucion'), df_combinado24.set_index('nombreinstitucion'), df_combinado25.set_index('nombreinstitucion'), df_combinado26.set_index('nombreinstitucion'), df_combinado27.set_index('nombreinstitucion'), df_combinado28.set_index('nombreinstitucion'), df_combinado29.set_index('nombreinstitucion'), df_combinado30.set_index('nombreinstitucion'), df_combinado31.set_index('nombreinstitucion'), df_combinado32.set_index('nombreinstitucion'), df_combinado33.set_index('nombreinstitucion'), df_combinado34.set_index('nombreinstitucion'),  df_combinado35.set_index('nombreinstitucion'), df_combinado36.set_index('nombreinstitucion'), df_combinado37.set_index('nombreinstitucion'), df_combinado38.set_index('nombreinstitucion'), df_combinado39.set_index('nombreinstitucion'), df_combinado40.set_index('nombreinstitucion'), df_combinado41.set_index('nombreinstitucion'), df_combinado42.set_index('nombreinstitucion'), df_combinado43.set_index('nombreinstitucion'), df_combinado44.set_index('nombreinstitucion'), df_combinado45.set_index('nombreinstitucion'), df_combinado46.set_index('nombreinstitucion'), df_combinado47.set_index('nombreinstitucion'), df_combinado48.set_index('nombreinstitucion'), df_combinado49.set_index('nombreinstitucion'), df_combinado50.set_index('nombreinstitucion'), df_combinado51.set_index('nombreinstitucion'), df_combinado52.set_index('nombreinstitucion'), df_combinado53.set_index('nombreinstitucion'), df_combinado54.set_index('nombreinstitucion'), df_combinado55.set_index('nombreinstitucion'), df_combinado56.set_index('nombreinstitucion'), df_combinado57.set_index('nombreinstitucion'), df_combinado58.set_index('nombreinstitucion'), df_combinado59.set_index('nombreinstitucion'), df_combinado60.set_index('nombreinstitucion'), df_combinado61.set_index('nombreinstitucion'), df_combinado62.set_index('nombreinstitucion'), df_combinado63.set_index('nombreinstitucion'), df_combinado64.set_index('nombreinstitucion'), df_combinado65.set_index('nombreinstitucion'), df_combinado66.set_index('nombreinstitucion'), df_combinado67.set_index('nombreinstitucion'), df_combinado68.set_index('nombreinstitucion'), df_combinado69.set_index('nombreinstitucion'), df_combinado70.set_index('nombreinstitucion'), df_combinado71.set_index('nombreinstitucion'), df_combinado72.set_index('nombreinstitucion'), df_combinado73.set_index('nombreinstitucion'), df_combinado74.set_index('nombreinstitucion'), df_combinado75.set_index('nombreinstitucion'), df_combinado76.set_index('nombreinstitucion'), df_combinado77.set_index('nombreinstitucion'), df_combinado78.set_index('nombreinstitucion'), df_combinado79.set_index('nombreinstitucion'), df_combinado80.set_index('nombreinstitucion'), df_combinado81.set_index('nombreinstitucion'), df_combinado82.set_index('nombreinstitucion'), df_combinado83.set_index('nombreinstitucion'), df_combinado84.set_index('nombreinstitucion'), df_combinado85.set_index('nombreinstitucion'), df_combinado86.set_index('nombreinstitucion'), df_combinado87.set_index('nombreinstitucion'), df_combinado88.set_index('nombreinstitucion'), df_combinado89.set_index('nombreinstitucion'), df_combinado90.set_index('nombreinstitucion'), df_combinado91.set_index('nombreinstitucion'), df_combinado92.set_index('nombreinstitucion'), df_combinado93.set_index('nombreinstitucion'), df_combinado94.set_index('nombreinstitucion'), df_combinado95.set_index('nombreinstitucion'), df_combinado96.set_index('nombreinstitucion'), df_combinado97.set_index('nombreinstitucion')], axis=1)
+
+# Concatenar los DataFrames en filas en una sola tabla
+result = pd.concat([
+    df_combinado1.set_index('nombreinstitucion'),
+    df_combinado2.set_index('nombreinstitucion'),
+    df_combinado3.set_index('nombreinstitucion'),
+    df_combinado4.set_index('nombreinstitucion'),
+    df_combinado5.set_index('nombreinstitucion'),
+    df_combinado6.set_index('nombreinstitucion'),
+    df_combinado7.set_index('nombreinstitucion'),
+    df_combinado8.set_index('nombreinstitucion'),
+    df_combinado9.set_index('nombreinstitucion'),
+    df_combinado10.set_index('nombreinstitucion'),
+    df_combinado11.set_index('nombreinstitucion'),
+    df_combinado12.set_index('nombreinstitucion'),
+    df_combinado13.set_index('nombreinstitucion'),
+    df_combinado14.set_index('nombreinstitucion'),
+    df_combinado15.set_index('nombreinstitucion'),
+    df_combinado16.set_index('nombreinstitucion'),
+    df_combinado17.set_index('nombreinstitucion'),
+    df_combinado18.set_index('nombreinstitucion'),
+    df_combinado19.set_index('nombreinstitucion'),
+    df_combinado20.set_index('nombreinstitucion'),
+    df_combinado21.set_index('nombreinstitucion'),
+    df_combinado22.set_index('nombreinstitucion'),
+    df_combinado23.set_index('nombreinstitucion'),
+    df_combinado24.set_index('nombreinstitucion'),
+    df_combinado25.set_index('nombreinstitucion'),
+    df_combinado26.set_index('nombreinstitucion'),
+    df_combinado27.set_index('nombreinstitucion'),
+    df_combinado28.set_index('nombreinstitucion'),
+    df_combinado29.set_index('nombreinstitucion'),
+    df_combinado30.set_index('nombreinstitucion'),
+    df_combinado31.set_index('nombreinstitucion'),
+    df_combinado32.set_index('nombreinstitucion'),
+    df_combinado33.set_index('nombreinstitucion'),
+    df_combinado34.set_index('nombreinstitucion'),
+    df_combinado35.set_index('nombreinstitucion'),
+    df_combinado36.set_index('nombreinstitucion'),
+    df_combinado37.set_index('nombreinstitucion'),
+    df_combinado38.set_index('nombreinstitucion'),
+    df_combinado39.set_index('nombreinstitucion'),
+    df_combinado40.set_index('nombreinstitucion'),
+    df_combinado41.set_index('nombreinstitucion'),
+    df_combinado42.set_index('nombreinstitucion'),
+    df_combinado43.set_index('nombreinstitucion'),
+    df_combinado44.set_index('nombreinstitucion'),
+    df_combinado45.set_index('nombreinstitucion'),
+    df_combinado46.set_index('nombreinstitucion'),
+    df_combinado47.set_index('nombreinstitucion'),
+    df_combinado48.set_index('nombreinstitucion'),
+    df_combinado49.set_index('nombreinstitucion'),
+    df_combinado50.set_index('nombreinstitucion'),
+    df_combinado51.set_index('nombreinstitucion'),
+    df_combinado52.set_index('nombreinstitucion'),
+    df_combinado53.set_index('nombreinstitucion'),
+    df_combinado54.set_index('nombreinstitucion'),
+    df_combinado55.set_index('nombreinstitucion'),
+    df_combinado56.set_index('nombreinstitucion'),
+    df_combinado57.set_index('nombreinstitucion'),
+    df_combinado58.set_index('nombreinstitucion'),
+    df_combinado59.set_index('nombreinstitucion'),
+    df_combinado60.set_index('nombreinstitucion'),
+    df_combinado61.set_index('nombreinstitucion'),
+    df_combinado62.set_index('nombreinstitucion'),
+    df_combinado63.set_index('nombreinstitucion'),
+    df_combinado64.set_index('nombreinstitucion'),
+    df_combinado65.set_index('nombreinstitucion'),
+    df_combinado66.set_index('nombreinstitucion'),
+    df_combinado67.set_index('nombreinstitucion'),
+    df_combinado68.set_index('nombreinstitucion'),
+    df_combinado69.set_index('nombreinstitucion'),
+    df_combinado70.set_index('nombreinstitucion'),
+    df_combinado71.set_index('nombreinstitucion'),
+    df_combinado72.set_index('nombreinstitucion'),
+    df_combinado73.set_index('nombreinstitucion'),
+    df_combinado74.set_index('nombreinstitucion'),
+    df_combinado75.set_index('nombreinstitucion'),
+    df_combinado76.set_index('nombreinstitucion'),
+    df_combinado77.set_index('nombreinstitucion'),
+    df_combinado78.set_index('nombreinstitucion'),
+    df_combinado79.set_index('nombreinstitucion'),
+    df_combinado80.set_index('nombreinstitucion'),
+    df_combinado81.set_index('nombreinstitucion'),
+    df_combinado82.set_index('nombreinstitucion'),
+    df_combinado83.set_index('nombreinstitucion'),
+    df_combinado84.set_index('nombreinstitucion'),
+    df_combinado85.set_index('nombreinstitucion'),
+    df_combinado86.set_index('nombreinstitucion'),
+    df_combinado87.set_index('nombreinstitucion'),
+    df_combinado88.set_index('nombreinstitucion'),
+    df_combinado89.set_index('nombreinstitucion'),
+    df_combinado90.set_index('nombreinstitucion'),
+    df_combinado91.set_index('nombreinstitucion'),
+    df_combinado92.set_index('nombreinstitucion'),
+    df_combinado93.set_index('nombreinstitucion'),
+    df_combinado94.set_index('nombreinstitucion'),
+    df_combinado95.set_index('nombreinstitucion'),
+    df_combinado96.set_index('nombreinstitucion'),
+    df_combinado97.set_index('nombreinstitucion'),
+    df_combinado98.set_index('nombreinstitucion'),
+    df_combinado99.set_index('nombreinstitucion'),
+    df_combinado100.set_index('nombreinstitucion'),
+    
+    
+    )], axis=1)
+    
+    
+    
+
+    
+    
+    
 
 # Guardar el DataFrame concatenado en un archivo Excel
 result.to_excel(r"C:\Users\crist\OneDrive\Documentos\Cristhian\Cristhian\CRISS\Allcot\DocumentosProyectos\python-sharepoint-office365-api-main\ARCHIVOS\Anexo IEB\MergeTotal\MergeTotal.xlsx", sheet_name='pag', engine = 'openpyxl')
