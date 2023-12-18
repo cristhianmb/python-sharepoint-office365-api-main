@@ -1,4 +1,4 @@
-#número de Terminales Punto de Venta - 2022
+#Numero de Terminales Punto de Venta - 2022
 import pandas as pd
 
 def Indicador_19_5(df_hoja11_1, df_hoja2_1, df_hoja2):

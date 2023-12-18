@@ -11,7 +11,7 @@ def Indicador_13_2(df_hoja1, df_hoja2):
 
     # Agrupar y agregar según tus necesidades
     df_combinado42 = df_combinado42.groupby(['nombreinstitucion', 'claveinstitucion', 'concepto']).agg(
-        Saldo_Cartera_de_crédito_con_riesgo_de_crédito_Etapa_Vivienda_Interés_Sociall=('importe_pesos', 'mean')
+        Saldo_Cartera_de_credito_con_riesgo_de_crédito_Etapa_Vivienda_Interés_Sociall=('importe_pesos', 'mean')
     ).reset_index()
 
     # Filtrar por el periodo deseado (2022)

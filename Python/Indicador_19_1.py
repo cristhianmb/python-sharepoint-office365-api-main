@@ -1,4 +1,4 @@
-#número de sucursales - 2022
+#Numero de sucursales - 2022
 import pandas as pd
 
 def Indicador_19_1(df_hoja11_1, df_hoja2_1, df_hoja2):
