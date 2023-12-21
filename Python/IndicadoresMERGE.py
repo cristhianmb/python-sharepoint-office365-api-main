@@ -131,7 +131,7 @@ from Indicador_21_4 import Indicador_21_4
 
 
 
-# Ruta al archivo Excel en tu PC
+# Ruta al archivo Excel en tu PC para indicadores hoja BD
 ruta_archivo_excel1 = r"C:\Users\crist\OneDrive\Documentos\Cristhian\Cristhian\CRISS\Allcot\DocumentosProyectos\python-sharepoint-office365-api-main\ARCHIVOS\Anexo IEB\Reportes\040_R12A_1219_133.xlsx"
 ruta_archivo_excel2 = r"C:\Users\crist\OneDrive\Documentos\Cristhian\Cristhian\CRISS\Allcot\DocumentosProyectos\python-sharepoint-office365-api-main\ARCHIVOS\Anexo IEB\Reportes\040_R12A_1220_133.xlsx"
 ruta_archivo_excel3 = r"C:\Users\crist\OneDrive\Documentos\Cristhian\Cristhian\CRISS\Allcot\DocumentosProyectos\python-sharepoint-office365-api-main\ARCHIVOS\Anexo IEB\Reportes\040_13A_R3B_Vivienda_2022.xlsx"
@@ -148,7 +148,8 @@ ruta_archivo_excel12_1 = r"C:\Users\crist\OneDrive\Documentos\Cristhian\Cristhia
 ruta_archivo_excel12_2 = r"C:\Users\crist\OneDrive\Documentos\Cristhian\Cristhian\CRISS\Allcot\DocumentosProyectos\python-sharepoint-office365-api-main\ARCHIVOS\Anexo IEB\Reportes\Riesgo Operacional SISECO\R28-A2811(2021_2).xlsx"
 ruta_archivo_excel12_3 = r"C:\Users\crist\OneDrive\Documentos\Cristhian\Cristhian\CRISS\Allcot\DocumentosProyectos\python-sharepoint-office365-api-main\ARCHIVOS\Anexo IEB\Reportes\Riesgo Operacional SISECO\R28-A2811(2021_3).xlsx"
 
-
+#Ruta archivo BD para Indicadores Cálculos
+ruta_archivo_excel50 = r"C:\Users\crist\OneDrive\Documentos\Cristhian\Cristhian\CRISS\Allcot\DocumentosProyectos\python-sharepoint-office365-api-main\ARCHIVOS\Anexo IEB\MergeTotal\MergeTotalF.xlsx"
 
 
 
@@ -194,6 +195,13 @@ hoja12_2 = 'R28-A2811(2021_2)'
 hoja12_3 = 'R28-A2811(2021_3)'
 
 
+#-...................... Hoja Indicadores Cálculos
+#  Nombre de las hojas que deseas cargar del archivo MergeTotalF.xlsx
+hoja50 = 'MergeTotalF'
+
+
+
+
 
 # Cargar el archivo Excel en DataFrames de pandas
 df_hoja1 = pd.read_excel(ruta_archivo_excel1, sheet_name=hoja1)
@@ -217,7 +225,6 @@ df_hoja11_1.columns = df_hoja11_1.iloc[0]
 df_hoja11_1 = df_hoja11_1.iloc[1:]
 
 
-
 '''
 #Asigna nombres de columnas de forma creciente
 nombres_columnas13 = [f'Column{i+1}' for i in range(df_hoja12_0.shape[1])]
@@ -234,8 +241,10 @@ df_hoja12_3 = pd.read_excel(ruta_archivo_excel12_3, sheet_name=hoja12_3)
 
 
 
-
-
+#...........Cargar el archivo Excel MergeTotalF en DataFrames de pandas
+df_DB = pd.read_excel(ruta_archivo_excel50, sheet_name=hoja50)
+nombres_columnas50 = [f'Column{i+1}' for i in range(df_DB.shape[1])]
+df_DB.columns = nombres_columnas50
 
 
 
@@ -478,8 +487,350 @@ df_combinado103 = df_combinado103.drop(columna_eliminar, axis=1)
 
 
 
+##########################    CALCULOS INDICADORES CALCULOS       ########################
+# Aplicar la fórmula para Indicador 1.1.1.1: 
+    
+    '''
+    df500 = df_DB.copy()
+    
+    # Aplicar la fórmula para Indicador 1.1.1.1: 
+    def aplicar_formula(row):
+        return ((row['Column5'] + row['Column6']) - (row['Column7'] + row['Column8'])) / row['Column4'] * 100
+
+    df500['1.1.1.1'] = df500.apply(aplicar_formula, axis=1) * 100
+ '''
+ 
+df500 = df_DB.copy()
+
+# Aplicar la fórmula para Indicador 1.1.1.1
+def aplicar_formula(row):
+    numerador = (row['Column5'] + row['Column6']) - (row['Column7'] + row['Column8'])
+    denominador = row['Column4']
+    
+    # Evitar la división por cero
+    if denominador == 0:
+        return 0
+    
+    # Calcular el resultado sin normalizar
+    resultado = (numerador / denominador) * 100
+    
+    return resultado
+
+# Aplicar la fórmula a la columna '1.1.1.1'
+df500['1.1.1.1'] = df500.apply(aplicar_formula, axis=1)
+
+# Normalizar la columna '1.1.1.1' entre 0 y 100
+df500['1.1.1.1'] = (df500['1.1.1.1'] - df500['1.1.1.1'].min()) / (df500['1.1.1.1'].max() - df500['1.1.1.1'].min()) * 100
 
 
+
+
+
+
+
+    # Aplicar la fórmula para Indicador 1.1.1.2: 
+        
+        '''
+        df501 = df_DB.copy()
+
+
+def aplicar_formula2(row):
+    numerador = ((row['Column5'] + row['Column6']) - (row['Column7'] + row['Column8'])) - ((row['Column9'] + row['Column10']) - (row['Column11'] + row['Column12']))
+    denominador = (row['Column7'] + row['Column8']) - (row['Column11'] + row['Column12'])
+    
+    if denominador == 0:
+        return 0  # Evitar la división por cero, puedes ajustar esto según tus necesidades
+        
+    return (numerador / denominador) * 100
+
+df501['1.1.1.2'] = df501.apply(aplicar_formula2, axis=1)
+'''
+
+
+# Supongamos que 'df_DB' es tu DataFrame original
+df501 = df_DB.copy()
+
+# Aplicar la fórmula para Indicador 1.1.1.2
+def aplicar_formula2(row):
+    numerador = ((row['Column5'] + row['Column6']) - (row['Column7'] + row['Column8'])) - ((row['Column9'] + row['Column10']) - (row['Column11'] + row['Column12']))
+    denominador = (row['Column7'] + row['Column8']) - (row['Column11'] + row['Column12'])
+    
+    # Evitar la división por cero
+    if denominador == 0:
+        return 0
+    
+    # Calcular el resultado sin normalizar
+    resultado = (numerador / denominador) * 100
+    
+    return resultado
+
+# Aplicar la fórmula a la columna '1.1.1.2'
+df501['1.1.1.2'] = df501.apply(aplicar_formula2, axis=1)
+
+# Manejar valores infinitos o NaN
+df501['1.1.1.2'] = df501['1.1.1.2'].replace([np.inf, -np.inf], np.nan)
+
+# Normalizar la columna '1.1.1.2' entre 0 y 100
+min_value = df501['1.1.1.2'].min()
+max_value = df501['1.1.1.2'].max()
+
+df501['1.1.1.2'] = ((df501['1.1.1.2'] - min_value) / (max_value - min_value) * 100).fillna(0)
+
+
+
+
+# Aplicar la fórmula para Indicador 1.1.1.3
+df502 = df_DB.copy()
+
+
+def aplicar_formula3(row):
+    numerador = row['Column5'] + row['Column6']
+    denominador = row['Column13']
+    
+    if denominador == 0:
+        return 0  # Evitar la división por cero, puedes ajustar esto según tus necesidades
+        
+    return (numerador / denominador) * 100
+
+
+df502['1.1.1.3'] = df502.apply(aplicar_formula3, axis=1)
+
+
+'''
+# Aplicar la fórmula para Indicador 1.1.1.4
+df503 = df_DB.copy()
+
+def aplicar_formula4(row):
+    numerador = row['Column14'] + row['Column15'] + row['Column16'] + row['Column17'] + row['Column18'] - row['Column19']
+    denominador = row['Column20'] + row['Column21'] + row['Column22'] + row['Column23']
+    
+    if denominador == 0:
+        return 0  # Evitar la división por cero, puedes ajustar esto según tus necesidades
+        
+    return (numerador / denominador) * 100
+
+df503['1.1.1.4'] = df503.apply(aplicar_formula4, axis=1)
+'''
+
+
+
+# Supongamos que 'df_DB' es tu DataFrame original
+df503 = df_DB.copy()
+
+# Aplicar la fórmula para Indicador 1.1.1.4
+def aplicar_formula4(row):
+    numerador = row['Column14'] + row['Column15'] + row['Column16'] + row['Column17'] + row['Column18'] - row['Column19']
+    denominador = row['Column20'] + row['Column21'] + row['Column22'] + row['Column23']
+    
+    if denominador == 0:
+        return 0  # Evitar la división por cero, puedes ajustar esto según tus necesidades
+        
+    return (numerador / denominador) * 100
+
+df503['1.1.1.4'] = df503.apply(aplicar_formula4, axis=1)
+
+# Manejar valores infinitos o NaN
+df503['1.1.1.4'] = df503['1.1.1.4'].replace([np.inf, -np.inf], np.nan)
+
+# Normalizar la columna '1.1.1.4' entre 0 y 100
+min_value = df503['1.1.1.4'].min()
+max_value = df503['1.1.1.4'].max()
+
+df503['1.1.1.4'] = ((df503['1.1.1.4'] - min_value) / (max_value - min_value) * 100).fillna(0)
+
+
+
+
+
+'''
+
+# Aplicar la fórmula para Indicador 1.1.1.5
+df504 = df_DB.copy()
+
+# Aplicar la fórmula para Indicador Z
+def aplicar_formula5(row):
+    numerador = row.loc['Column24':'Column29'].sum() - row.loc['Column30':'Column35'].sum()
+    denominador = row.loc['Column30':'Column35'].sum()
+    
+    if denominador == 0:
+        return 0  # Evitar la división por cero, puedes ajustar esto según tus necesidades
+        
+    return (numerador / denominador) * 100
+
+df504['1.1.1.5'] = df504.apply(aplicar_formula5, axis=1)
+'''
+# Aplicar la fórmula para Indicador 1.1.1.5
+df504 = df_DB.copy()
+
+# Crear la columna '1.1.1.5'
+columnas_numerador = df504.loc[:, 'Column24':'Column29']
+columnas_denominador = df504.loc[:, 'Column30':'Column35']
+
+df504['1.1.1.5'] = columnas_numerador.sum(axis=1) - columnas_denominador.sum(axis=1)
+min_valor = columnas_numerador.sum(axis=1).min()
+max_valor = columnas_numerador.sum(axis=1).max()
+
+# Aplicar la normalización y escalado
+df504['1.1.1.5'] = df504['1.1.1.5'].apply(lambda x: ((x - min_valor) / (max_valor - min_valor)) * 100 if min_valor != max_valor else 0)
+
+# Manejar valores infinitos o NaN
+df504['1.1.1.5'] = df504['1.1.1.5'].replace([np.inf, -np.inf], np.nan).fillna(0)
+
+
+
+# Aplicar la fórmula para Indicador 1.1.2.1
+df505 = df_DB.copy()
+
+
+def aplicar_formula6(row):
+    numerador = row['Column36'] + row['Column37']
+    denominador = row['Column38'] + row['Column37']
+    
+    if denominador == 0:
+        return 0  # Evitar la división por cero, puedes ajustar esto según tus necesidades
+        
+    return (numerador / denominador) * 100
+
+df505['1.1.2.1'] = df505.apply(aplicar_formula6, axis=1)
+
+# Aplicar la fórmula para Indicador 1.1.2.2
+df506 = df_DB.copy()
+
+
+def aplicar_formula7(row):
+    numerador = row['Column40']
+    denominador = row['Column39'] + row['Column40'] + row['Column41']
+    
+    if denominador == 0:
+        return 0  # Evitar la división por cero, puedes ajustar esto según tus necesidades
+        
+    return (numerador / denominador) * 100
+
+df506['1.1.2.2'] = df506.apply(aplicar_formula7, axis=1)
+
+# Aplicar la fórmula para Indicador 1.1.2.3
+
+df507 = df_DB.copy()
+
+
+def aplicar_formula8(row):
+    numerador = row['Column43']
+    denominador = row['Column42'] + row['Column43'] + row['Column44']
+    
+    if denominador == 0:
+        return 0  # Evitar la división por cero, puedes ajustar esto según tus necesidades
+        
+    return (numerador / denominador) * 100
+
+df507['1.1.2.3'] = df507.apply(aplicar_formula8, axis=1)
+
+# Aplicar la fórmula para Indicador 1.1.2.4
+
+df508 = df_DB.copy()
+
+def aplicar_formula9(row):
+    numerador = row['Column46']
+    denominador = row['Column45'] + row['Column46'] + row['Column47']
+    
+    if denominador == 0:
+        return 0  # Evitar la división por cero, puedes ajustar esto según tus necesidades
+        
+    return (numerador / denominador) * 100
+
+df508['1.1.2.4'] = df508.apply(aplicar_formula9, axis=1)
+
+
+# Aplicar la fórmula para Indicador 1.1.2.5
+df509 = df_DB.copy()
+
+def aplicar_formula10(row):
+    numerador = row['Column48'] + row['Column49'] + row['Column50']
+    denominador = row['Column51'] + row['Column52'] + row['Column53'] + row['Column54'] + row['Column55'] + row['Column56'] + row['Column57'] + row['Column58']
+    
+    if denominador == 0:
+        return 0  # Evitar la división por cero, puedes ajustar esto según tus necesidades
+        
+    return (numerador / denominador) * 100
+
+df509['1.1.2.5'] = df509.apply(aplicar_formula10, axis=1)
+
+
+# Aplicar la fórmula para Indicador 1.2.1
+
+df510 = df_DB.copy()
+
+# Aplicar la fórmula para Indicador Z3
+def aplicar_formula11(row):
+    numerador = row['Column59']
+    denominador = row['Column60']
+    
+    if denominador == 0:
+        return 0  # Evitar la división por cero, puedes ajustar esto según tus necesidades
+        
+    return (numerador / denominador) * 100
+
+df510['1.2.1'] = df510.apply(aplicar_formula11, axis=1)
+
+# Aplicar la fórmula para Indicador 1.2.2
+
+df511 = df_DB.copy()
+
+
+def aplicar_formula12(row):
+    numerador = row['Column61'] + row['Column62']
+    denominador = row['Column62']
+    
+    if denominador == 0:
+        return 0  # Evitar la división por cero, puedes ajustar esto según tus necesidades
+        
+    return (numerador / denominador) * 100
+
+df511['1.2.2'] = df511.apply(aplicar_formula12, axis=1)
+
+
+# Aplicar la fórmula para Indicador 2.1
+
+
+df512 = df_DB.copy()
+
+# Aplicar la fórmula para Indicador X4
+def aplicar_formula13(row):
+    numerador = row.loc['Column63':'Column67'].sum() - row.loc['Column68':'Column73'].sum()
+    denominador = abs(row.loc['Column68':'Column73'].sum())
+    
+    if denominador == 0:
+        return 0  # Evitar la división por cero, puedes ajustar esto según tus necesidades
+        
+    return (numerador / denominador) * 100
+
+df512['2.1'] = df512.apply(aplicar_formula13, axis=1)
+
+
+
+
+
+
+
+# Crear un nuevo DataFrame con las columnas deseadas
+IC = pd.concat([
+    df500.set_index('Column1')['Column2'],
+    df500.set_index('Column1')['Column3'],
+    df500.set_index('Column1')['1.1.1.1'],
+    df501.set_index('Column1')['1.1.1.2'],
+    df502.set_index('Column1')['1.1.1.3'],
+    df503.set_index('Column1')['1.1.1.4'],
+    df504.set_index('Column1')['1.1.1.5'],
+    df505.set_index('Column1')['1.1.2.1'],
+    df506.set_index('Column1')['1.1.2.2'],
+    df507.set_index('Column1')['1.1.2.3'],
+    df508.set_index('Column1')['1.1.2.4'],
+    df509.set_index('Column1')['1.1.2.5'],
+    df510.set_index('Column1')['1.2.1'],
+    df511.set_index('Column1')['1.2.2'],
+    df512.set_index('Column1')['2.1'],
+    
+    
+], axis=1)
 
 
 
