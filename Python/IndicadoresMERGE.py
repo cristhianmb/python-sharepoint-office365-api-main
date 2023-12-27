@@ -2,6 +2,8 @@ import pandas as pd
 import csv
 import numpy as np
 
+
+
 from Indicador_1 import Indicador_1
 from Indicador_2 import Indicador_2
 from Indicador_3 import Indicador_3
@@ -487,9 +489,18 @@ df_combinado103 = df_combinado103.drop(columna_eliminar, axis=1)
 
 
 
-##########################    CALCULOS INDICADORES CALCULOS       ########################
+
+
+
+####################################    CALCULOS INDICADORES CALCULOS       ###############################################################
+
+
+
+
+
+
+
 # Aplicar la fórmula para Indicador 1.1.1.1: 
-    
     '''
     df500 = df_DB.copy()
     
@@ -498,8 +509,8 @@ df_combinado103 = df_combinado103.drop(columna_eliminar, axis=1)
         return ((row['Column5'] + row['Column6']) - (row['Column7'] + row['Column8'])) / row['Column4'] * 100
 
     df500['1.1.1.1'] = df500.apply(aplicar_formula, axis=1) * 100
- '''
- 
+
+'''
 df500 = df_DB.copy()
 
 # Aplicar la fórmula para Indicador 1.1.1.1
@@ -519,24 +530,23 @@ def aplicar_formula(row):
 # Aplicar la fórmula a la columna '1.1.1.1'
 df500['1.1.1.1'] = df500.apply(aplicar_formula, axis=1)
 
-# Normalizar la columna '1.1.1.1' entre 0 y 100
-df500['1.1.1.1'] = (df500['1.1.1.1'] - df500['1.1.1.1'].min()) / (df500['1.1.1.1'].max() - df500['1.1.1.1'].min()) * 100
+# Normalizar la columna '1.1.1.1' entre 0 y 100 y eliminar decimales
+df500['1.1.1.1'] = round((df500['1.1.1.1'] - df500['1.1.1.1'].min()) / (df500['1.1.1.1'].max() - df500['1.1.1.1'].min()) * 100)
 
-
+# Asegurarse de que los valores estén en el rango correcto (0-100)
+df500['1.1.1.1'] = df500['1.1.1.1'].clip(0, 100)
 
 
 
 
 
     # Aplicar la fórmula para Indicador 1.1.1.2: 
-        
-        '''
-        df501 = df_DB.copy()
-
+   '''   
+df501 = df_DB.copy()
 
 def aplicar_formula2(row):
     numerador = ((row['Column5'] + row['Column6']) - (row['Column7'] + row['Column8'])) - ((row['Column9'] + row['Column10']) - (row['Column11'] + row['Column12']))
-    denominador = (row['Column7'] + row['Column8']) - (row['Column11'] + row['Column12'])
+    denominador = (row['Column9'] + row['Column10']) - (row['Column11'] + row['Column12'])
     
     if denominador == 0:
         return 0  # Evitar la división por cero, puedes ajustar esto según tus necesidades
@@ -547,39 +557,40 @@ df501['1.1.1.2'] = df501.apply(aplicar_formula2, axis=1)
 '''
 
 
-# Supongamos que 'df_DB' es tu DataFrame original
+
+
 df501 = df_DB.copy()
 
-# Aplicar la fórmula para Indicador 1.1.1.2
+# Definir la función para la fórmula 1.1.1.2
 def aplicar_formula2(row):
     numerador = ((row['Column5'] + row['Column6']) - (row['Column7'] + row['Column8'])) - ((row['Column9'] + row['Column10']) - (row['Column11'] + row['Column12']))
-    denominador = (row['Column7'] + row['Column8']) - (row['Column11'] + row['Column12'])
+    denominador = (row['Column9'] + row['Column10']) - (row['Column11'] + row['Column12'])
     
-    # Evitar la división por cero
     if denominador == 0:
-        return 0
-    
-    # Calcular el resultado sin normalizar
-    resultado = (numerador / denominador) * 100
-    
-    return resultado
+        return 0  # Evitar la división por cero, puedes ajustar esto según tus necesidades
+        
+    return (numerador / denominador) * 100
 
 # Aplicar la fórmula a la columna '1.1.1.2'
 df501['1.1.1.2'] = df501.apply(aplicar_formula2, axis=1)
 
-# Manejar valores infinitos o NaN
-df501['1.1.1.2'] = df501['1.1.1.2'].replace([np.inf, -np.inf], np.nan)
+# Normalizar la columna '1.1.1.2' entre 0 y 100 y eliminar decimales
+df501['1.1.1.2'] = round((df501['1.1.1.2'] - df501['1.1.1.2'].min()) / (df501['1.1.1.2'].max() - df501['1.1.1.2'].min()) * 100)
 
-# Normalizar la columna '1.1.1.2' entre 0 y 100
-min_value = df501['1.1.1.2'].min()
-max_value = df501['1.1.1.2'].max()
+# Asegurarse de que los valores estén en el rango correcto (0-100)
+df501['1.1.1.2'] = df501['1.1.1.2'].clip(0, 100)
 
-df501['1.1.1.2'] = ((df501['1.1.1.2'] - min_value) / (max_value - min_value) * 100).fillna(0)
+
+
+
+
+
 
 
 
 
 # Aplicar la fórmula para Indicador 1.1.1.3
+'''
 df502 = df_DB.copy()
 
 
@@ -594,10 +605,41 @@ def aplicar_formula3(row):
 
 
 df502['1.1.1.3'] = df502.apply(aplicar_formula3, axis=1)
-
-
 '''
+
+
+
+df502 = df_DB.copy()
+
+# Definir la función para la fórmula 1.1.1.3
+def aplicar_formula3(row):
+    numerador = row['Column5'] + row['Column6']
+    denominador = row['Column13']
+    
+    if denominador == 0:
+        return 0  # Evitar la división por cero, puedes ajustar esto según tus necesidades
+        
+    return (numerador / denominador) * 100
+
+# Aplicar la fórmula a la columna '1.1.1.3'
+df502['1.1.1.3'] = df502.apply(aplicar_formula3, axis=1)
+
+# Normalizar la columna '1.1.1.3' entre 0 y 100 y eliminar decimales
+df502['1.1.1.3'] = round((df502['1.1.1.3'] - df502['1.1.1.3'].min()) / (df502['1.1.1.3'].max() - df502['1.1.1.3'].min()) * 100)
+
+# Asegurarse de que los valores estén en el rango correcto (0-100)
+df502['1.1.1.3'] = df502['1.1.1.3'].clip(0, 100)
+
+
+
+
+
+
+
+
+
 # Aplicar la fórmula para Indicador 1.1.1.4
+'''
 df503 = df_DB.copy()
 
 def aplicar_formula4(row):
@@ -612,12 +654,9 @@ def aplicar_formula4(row):
 df503['1.1.1.4'] = df503.apply(aplicar_formula4, axis=1)
 '''
 
-
-
-# Supongamos que 'df_DB' es tu DataFrame original
 df503 = df_DB.copy()
 
-# Aplicar la fórmula para Indicador 1.1.1.4
+# Definir la función para la fórmula 1.1.1.4
 def aplicar_formula4(row):
     numerador = row['Column14'] + row['Column15'] + row['Column16'] + row['Column17'] + row['Column18'] - row['Column19']
     denominador = row['Column20'] + row['Column21'] + row['Column22'] + row['Column23']
@@ -627,24 +666,25 @@ def aplicar_formula4(row):
         
     return (numerador / denominador) * 100
 
+# Aplicar la fórmula a la columna '1.1.1.4'
 df503['1.1.1.4'] = df503.apply(aplicar_formula4, axis=1)
 
-# Manejar valores infinitos o NaN
-df503['1.1.1.4'] = df503['1.1.1.4'].replace([np.inf, -np.inf], np.nan)
+# Normalizar la columna '1.1.1.4' entre 0 y 100 y eliminar decimales
+df503['1.1.1.4'] = round((df503['1.1.1.4'] - df503['1.1.1.4'].min()) / (df503['1.1.1.4'].max() - df503['1.1.1.4'].min()) * 100)
 
-# Normalizar la columna '1.1.1.4' entre 0 y 100
-min_value = df503['1.1.1.4'].min()
-max_value = df503['1.1.1.4'].max()
-
-df503['1.1.1.4'] = ((df503['1.1.1.4'] - min_value) / (max_value - min_value) * 100).fillna(0)
+# Asegurarse de que los valores estén en el rango correcto (0-100)
+df503['1.1.1.4'] = df503['1.1.1.4'].clip(0, 100)
 
 
 
 
 
-'''
+
+
+
 
 # Aplicar la fórmula para Indicador 1.1.1.5
+'''
 df504 = df_DB.copy()
 
 # Aplicar la fórmula para Indicador Z
@@ -659,26 +699,42 @@ def aplicar_formula5(row):
 
 df504['1.1.1.5'] = df504.apply(aplicar_formula5, axis=1)
 '''
-# Aplicar la fórmula para Indicador 1.1.1.5
+
+
+
 df504 = df_DB.copy()
 
-# Crear la columna '1.1.1.5'
-columnas_numerador = df504.loc[:, 'Column24':'Column29']
-columnas_denominador = df504.loc[:, 'Column30':'Column35']
+# Definir la función para la fórmula 1.1.1.5
+def aplicar_formula5(row):
+    numerador = row.loc['Column24':'Column29'].sum() - row.loc['Column30':'Column35'].sum()
+    denominador = row.loc['Column30':'Column35'].sum()
+    
+    if denominador == 0:
+        return 0  # Evitar la división por cero, puedes ajustar esto según tus necesidades
+        
+    return (numerador / denominador) * 100
 
-df504['1.1.1.5'] = columnas_numerador.sum(axis=1) - columnas_denominador.sum(axis=1)
-min_valor = columnas_numerador.sum(axis=1).min()
-max_valor = columnas_numerador.sum(axis=1).max()
+# Aplicar la fórmula a la columna '1.1.1.4'
+df504['1.1.1.5'] = df504.apply(aplicar_formula5, axis=1)
 
-# Aplicar la normalización y escalado
-df504['1.1.1.5'] = df504['1.1.1.5'].apply(lambda x: ((x - min_valor) / (max_valor - min_valor)) * 100 if min_valor != max_valor else 0)
+# Normalizar la columna '1.1.1.4' entre 0 y 100 y eliminar decimales
+df504['1.1.1.5'] = round((df504['1.1.1.5'] - df504['1.1.1.5'].min()) / (df504['1.1.1.5'].max() - df504['1.1.1.5'].min()) * 100)
 
-# Manejar valores infinitos o NaN
-df504['1.1.1.5'] = df504['1.1.1.5'].replace([np.inf, -np.inf], np.nan).fillna(0)
+# Asegurarse de que los valores estén en el rango correcto (0-100)
+df504['1.1.1.5'] = df504['1.1.1.5'].clip(0, 100)
+
+
+
+
+
+
+
 
 
 
 # Aplicar la fórmula para Indicador 1.1.2.1
+
+'''
 df505 = df_DB.copy()
 
 
@@ -692,8 +748,38 @@ def aplicar_formula6(row):
     return (numerador / denominador) * 100
 
 df505['1.1.2.1'] = df505.apply(aplicar_formula6, axis=1)
+'''
+
+df505 = df_DB.copy()
+
+# Definir la función para la fórmula 1.1.2.1
+def aplicar_formula6(row):
+    numerador = row['Column36'] + row['Column37'] 
+    denominador = row['Column38'] + row['Column37'] 
+    
+    if denominador == 0:
+        return 0  # Evitar la división por cero, puedes ajustar esto según tus necesidades
+        
+    return 1 - ((numerador / denominador) * 100)
+
+# Aplicar la fórmula a la columna '1.1.1.4'
+df505['1.1.2.1'] = df505.apply(aplicar_formula6, axis=1)
+
+# Normalizar la columna '1.1.1.4' entre 0 y 100 y eliminar decimales
+df505['1.1.2.1'] = round((df505['1.1.2.1'] - df505['1.1.2.1'].min()) / (df505['1.1.2.1'].max() - df505['1.1.2.1'].min()) * 100)
+
+# Asegurarse de que los valores estén en el rango correcto (0-100)
+df505['1.1.2.1'] = df505['1.1.2.1'].clip(0, 100)
+
+
+
+
+
+
+
 
 # Aplicar la fórmula para Indicador 1.1.2.2
+'''
 df506 = df_DB.copy()
 
 
@@ -707,9 +793,44 @@ def aplicar_formula7(row):
     return (numerador / denominador) * 100
 
 df506['1.1.2.2'] = df506.apply(aplicar_formula7, axis=1)
+'''
+
+
+
+
+
+
+df506 = df_DB.copy()
+
+# Definir la función para la fórmula 1.1.2.2
+def aplicar_formula7(row):
+    numerador = row['Column40'] 
+    denominador = row['Column39'] + row['Column40']  + row['Column41'] 
+    
+    if denominador == 0:
+        return 0  # Evitar la división por cero, puedes ajustar esto según tus necesidades
+        
+    return 1 - ((numerador / denominador) * 100)
+
+# Aplicar la fórmula a la columna '1.1.1.4'
+df506['1.1.2.2'] = df506.apply(aplicar_formula7, axis=1)
+
+# Normalizar la columna '1.1.1.4' entre 0 y 100 y eliminar decimales
+df506['1.1.2.2'] = round((df506['1.1.2.2'] - df506['1.1.2.2'].min()) / (df506['1.1.2.2'].max() - df506['1.1.2.2'].min()) * 100)
+
+# Asegurarse de que los valores estén en el rango correcto (0-100)
+df506['1.1.2.2'] = df506['1.1.2.2'].clip(0, 100)
+
+
+
+
+
+
+
+
 
 # Aplicar la fórmula para Indicador 1.1.2.3
-
+'''
 df507 = df_DB.copy()
 
 
@@ -723,9 +844,39 @@ def aplicar_formula8(row):
     return (numerador / denominador) * 100
 
 df507['1.1.2.3'] = df507.apply(aplicar_formula8, axis=1)
+'''
+
+
+df507 = df_DB.copy()
+
+# Definir la función para la fórmula 1.1.2.3
+def aplicar_formula8(row):
+    numerador = row['Column43'] 
+    denominador = row['Column42'] + row['Column43'] + row['Column44']
+    
+    if denominador == 0:
+        return 0  # Evitar la división por cero, puedes ajustar esto según tus necesidades
+        
+    return 1 - ((numerador / denominador) * 100)
+
+# Aplicar la fórmula a la columna '1.1.1.4'
+df507['1.1.2.3'] = df507.apply(aplicar_formula8, axis=1)
+
+# Normalizar la columna '1.1.1.4' entre 0 y 100 y eliminar decimales
+df507['1.1.2.3'] = round((df507['1.1.2.3'] - df507['1.1.2.3'].min()) / (df507['1.1.2.3'].max() - df507['1.1.2.3'].min()) * 100)
+
+# Asegurarse de que los valores estén en el rango correcto (0-100)
+df507['1.1.2.3'] = df507['1.1.2.3'].clip(0, 100)
+
+
+
+
+
+
+
 
 # Aplicar la fórmula para Indicador 1.1.2.4
-
+'''
 df508 = df_DB.copy()
 
 def aplicar_formula9(row):
@@ -738,9 +889,44 @@ def aplicar_formula9(row):
     return (numerador / denominador) * 100
 
 df508['1.1.2.4'] = df508.apply(aplicar_formula9, axis=1)
+'''
+
+
+
+df508 = df_DB.copy()
+
+# Definir la función para la fórmula 1.1.2.4
+def aplicar_formula9(row):
+    numerador = row['Column46'] 
+    denominador = row['Column45'] + row['Column46'] + row['Column47']
+    
+    if denominador == 0:
+        return 0  # Evitar la división por cero, puedes ajustar esto según tus necesidades
+        
+    return 1 - ((numerador / denominador) * 100)
+
+# Aplicar la fórmula a la columna '1.1.1.4'
+df508['1.1.2.4'] = df508.apply(aplicar_formula9, axis=1)
+
+# Normalizar la columna '1.1.1.4' entre 0 y 100 y eliminar decimales
+df508['1.1.2.4'] = round((df508['1.1.2.4'] - df508['1.1.2.4'].min()) / (df508['1.1.2.4'].max() - df508['1.1.2.4'].min()) * 100)
+
+# Asegurarse de que los valores estén en el rango correcto (0-100)
+df508['1.1.2.4'] = df508['1.1.2.4'].clip(0, 100)
+
+
+
+
+
+
+
+
+
+
 
 
 # Aplicar la fórmula para Indicador 1.1.2.5
+'''
 df509 = df_DB.copy()
 
 def aplicar_formula10(row):
@@ -753,10 +939,45 @@ def aplicar_formula10(row):
     return (numerador / denominador) * 100
 
 df509['1.1.2.5'] = df509.apply(aplicar_formula10, axis=1)
+'''
+
+
+
+
+
+
+df509 = df_DB.copy()
+
+# Definir la función para la fórmula 1.1.2.5
+def aplicar_formula10(row):
+    numerador = row['Column48'] + row['Column49'] + row['Column50']
+    denominador = row['Column51'] + row['Column52'] + row['Column53'] + row['Column54'] + row['Column55'] + row['Column56'] + row['Column57'] + row['Column58']
+    
+    if denominador == 0:
+        return 0  # Evitar la división por cero, puedes ajustar esto según tus necesidades
+        
+    return 1 - ((numerador / denominador) * 100)
+
+# Aplicar la fórmula a la columna '1.1.1.4'
+df509['1.1.2.5'] = df509.apply(aplicar_formula10, axis=1)
+
+# Normalizar la columna '1.1.1.4' entre 0 y 100 y eliminar decimales
+df509['1.1.2.5'] = round((df509['1.1.2.5'] - df509['1.1.2.5'].min()) / (df509['1.1.2.5'].max() - df509['1.1.2.5'].min()) * 100)
+
+# Asegurarse de que los valores estén en el rango correcto (0-100)
+df509['1.1.2.5'] = df509['1.1.2.5'].clip(0, 100)
+
+
+
+
+
+
+
+
 
 
 # Aplicar la fórmula para Indicador 1.2.1
-
+'''
 df510 = df_DB.copy()
 
 # Aplicar la fórmula para Indicador Z3
@@ -770,9 +991,44 @@ def aplicar_formula11(row):
     return (numerador / denominador) * 100
 
 df510['1.2.1'] = df510.apply(aplicar_formula11, axis=1)
+'''
+
+df510 = df_DB.copy()
+
+# Definir la función para la fórmula 1.2.1
+def aplicar_formula11(row):
+    numerador = row['Column59']
+    denominador = row['Column62']
+    
+    if denominador == 0:
+        return 0  # Evitar la división por cero, puedes ajustar esto según tus necesidades
+        
+    return (numerador / denominador) * 100
+
+# Aplicar la fórmula a la columna '1.1.1.4'
+df510['1.2.1'] = df510.apply(aplicar_formula11, axis=1)
+
+# Normalizar la columna '1.1.1.4' entre 0 y 100 y eliminar decimales
+df510['1.2.1'] = round((df510['1.2.1'] - df510['1.2.1'].min()) / (df510['1.2.1'].max() - df510['1.2.1'].min()) * 100)
+
+# Asegurarse de que los valores estén en el rango correcto (0-100)
+df510['1.2.1'] = df510['1.2.1'].clip(0, 100)
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 # Aplicar la fórmula para Indicador 1.2.2
-
+'''
 df511 = df_DB.copy()
 
 
@@ -786,9 +1042,55 @@ def aplicar_formula12(row):
     return (numerador / denominador) * 100
 
 df511['1.2.2'] = df511.apply(aplicar_formula12, axis=1)
+'''
+
+
+
+
+df511 = df_DB.copy()
+
+# Definir la función para la fórmula 1.2.2
+def aplicar_formula12(row):
+    numerador = row['Column63'] + row['Column64']
+    denominador = row['Column64']
+    
+    if denominador == 0:
+        return 0  # Evitar la división por cero, puedes ajustar esto según tus necesidades
+        
+    return (numerador / denominador) * 100
+
+# Aplicar la fórmula a la columna '1.1.1.4'
+df511['1.2.2'] = df511.apply(aplicar_formula12, axis=1)
+
+# Normalizar la columna '1.1.1.4' entre 0 y 100 y eliminar decimales
+df511['1.2.2'] = round((df511['1.2.2'] - df511['1.2.2'].min()) / (df511['1.2.2'].max() - df511['1.2.2'].min()) * 100)
+
+# Asegurarse de que los valores estén en el rango correcto (0-100)
+df511['1.2.2'] = df511['1.2.2'].clip(0, 100)
+
+
+
+
+
+
 
 
 # Aplicar la fórmula para Indicador 2.1
+
+
+'''
+df512 = df_DB.copy()
+
+columnas_numerador = df512.loc[:, 'Column65':'Column70']
+columnas_denominador = df512.loc[:, 'Column71':'Column76']
+
+df512['2.1'] = (columnas_numerador.sum(axis=1) - columnas_denominador.sum(axis=1)) / np.abs(columnas_denominador.sum(axis=1)) * 100
+
+# Manejar valores infinitos o NaN
+df512['2.1'] = df512['2.1'].replace([np.inf, -np.inf], np.nan).fillna(0)
+'''
+
+
 
 
 
@@ -804,8 +1106,24 @@ df512['2.1'] = df512['2.1'].replace([np.inf, -np.inf], np.nan).fillna(0)
 
 
 
-# Aplicar la fórmula para Indicador 2.2
+# Normalizar la columna '1.1.1.4' entre 0 y 100 y eliminar decimales
+df512['2.1'] = round((df512['2.1'] - df512['2.1'].min()) / (df512['2.1'].max() - df512['2.1'].min()) * 100)
 
+# Asegurarse de que los valores estén en el rango correcto (0-100)
+df512['2.1'] = df512['2.1'].clip(0, 100)
+
+
+
+
+
+
+
+
+
+
+
+# Aplicar la fórmula para Indicador 2.2
+'''
 df513 = df_DB.copy()
 
 def aplicar_formula14(row):
@@ -818,9 +1136,116 @@ def aplicar_formula14(row):
     return (numerador / denominador) * 100
 
 df513['2.2'] = df513.apply(aplicar_formula14, axis=1)
+'''
 
 
-# Aplicar la fórmula para Indicador 3.2
+
+
+df513 = df_DB.copy()
+
+# Definir la función para la fórmula 2.2
+def aplicar_formula14(row):
+    numerador = (row['Column77'] + row['Column78']) - (row['Column79'] + row['Column80'])
+    denominador = np.abs(row['Column79'] + row['Column80'])
+    
+    if denominador == 0:
+        return 0  # Evitar la división por cero, puedes ajustar esto según tus necesidades
+        
+    # Aplicar la fórmula y convertir a porcentaje
+    resultado = (numerador / denominador) * 100
+
+    return resultado
+
+# Aplicar la fórmula a la columna '2.2'
+df513['2.2'] = df513.apply(aplicar_formula14, axis=1)
+
+# Normalizar la columna '2.2' entre 0 y 100 y eliminar decimales
+df513['2.2'] = round((df513['2.2'] - df513['2.2'].min()) / (df513['2.2'].max() - df513['2.2'].min()) * 100)
+
+# Asegurarse de que los valores estén en el rango correcto (0-100)
+df513['2.2'] = df513['2.2'].clip(0, 100)
+
+
+
+
+
+
+# Aplicar la fórmula para Indicador 2.3
+
+'''
+df513_1 = df_DB.copy()
+
+# Definir la función para aplicar la fórmula
+def aplicar_formula14_1(row):
+    numerador = (
+        row['Column81'] - row['Column82'] - row['Column83'] -
+        row['Column84'] - row['Column85'] - row['Column86'] -
+        row['Column87'] - row['Column88'] - row['Column89'] -
+        row['Column90']
+    )
+    denominador = (
+        row['Column91'] - row['Column92'] - row['Column93'] -
+        row['Column94'] - row['Column95'] - row['Column96'] -
+        row['Column97'] - row['Column98'] - row['Column99'] -
+        row['Column100']
+    )
+    
+    if denominador == 0:
+        return 0  # Evitar la división por cero, puedes ajustar esto según tus necesidades
+        
+    return ((numerador / denominador) - 1) * 100
+
+# Aplicar la función a una nueva columna 'Nueva_Columna'
+df513_1['2.3'] = df513_1.apply(aplicar_formula14_1, axis=1)
+'''
+
+
+
+df513_1 = df_DB.copy()
+
+# Definir la función para aplicar la fórmula
+def aplicar_formula14_1(row):
+    numerador = (
+        row['Column81'] - row['Column82'] - row['Column83'] -
+        row['Column84'] - row['Column85'] - row['Column86'] -
+        row['Column87'] - row['Column88'] - row['Column89'] -
+        row['Column90']
+    )
+    denominador = (
+        row['Column91'] - row['Column92'] - row['Column93'] -
+        row['Column94'] - row['Column95'] - row['Column96'] -
+        row['Column97'] - row['Column98'] - row['Column99'] -
+        row['Column100']
+    )
+    
+    if denominador == 0:
+        return 0  # Evitar la división por cero, puedes ajustar esto según tus necesidades
+        
+    # Aplicar la fórmula y convertir a porcentaje
+    resultado = ((numerador / denominador) - 1) * 100
+
+    return resultado
+
+# Aplicar la función a la columna '2.3'
+df513_1['2.3'] = df513_1.apply(aplicar_formula14_1, axis=1)
+
+# Normalizar la columna '2.3' entre 0 y 100 y eliminar decimales
+df513_1['2.3'] = round((df513_1['2.3'] - df513_1['2.3'].min()) / (df513_1['2.3'].max() - df513_1['2.3'].min()) * 100)
+
+# Asegurarse de que los valores estén en el rango correcto (0-100)
+df513_1['2.3'] = df513_1['2.3'].clip(0, 100)
+
+
+
+
+
+
+
+
+
+
+# Aplicar la fórmula para Indicador 3.1
+'''
 df514 = df_DB.copy()
 
 def aplicar_formula15(row):
@@ -832,53 +1257,140 @@ def aplicar_formula15(row):
         
     return (numerador / denominador) * 100
 
-df514['3.2'] = df514.apply(aplicar_formula15, axis=1)
+df514['3.1'] = df514.apply(aplicar_formula15, axis=1)
+
+'''
+
+
+
+
+df514 = df_DB.copy()
+
+# Definir la función para aplicar la fórmula
+def aplicar_formula15(row):
+    numerador = row['Column101'] - row['Column102']
+    denominador = np.abs(row['Column102'])
+    
+    if denominador == 0:
+        return 0  # Evitar la división por cero, puedes ajustar esto según tus necesidades
+        
+    # Aplicar la fórmula y convertir a porcentaje
+    resultado = (numerador / denominador) * 100
+
+    return resultado
+
+# Aplicar la función a la columna '3.1'
+df514['3.1'] = df514.apply(aplicar_formula15, axis=1)
+
+# Normalizar la columna '3.1' entre 0 y 100 y eliminar decimales
+df514['3.1'] = round((df514['3.1'] - df514['3.1'].min()) / (df514['3.1'].max() - df514['3.1'].min()) * 100)
+
+# Asegurarse de que los valores estén en el rango correcto (0-100)
+df514['3.1'] = df514['3.1'].clip(0, 100)
+
+
+
+
+
+
 
 
 
 
 # Aplicar la fórmula para Indicador 4.1.1
-
+'''
 df515 = df_DB.copy()
 
 def aplicar_formula16(row):
-    denominador = row['Column103']
+    denominador = row['Column104']
     
     # Evitar la división por cero
     if denominador == 0:
         return 0
     
-    numerador = ((row['Column104'] / denominador) - 1) * 100
+    numerador = ((row['Column103'] / denominador) - 1) * 100
     
     return numerador
 
-df515['4.1.1'] = df515.apply(aplicar_formula16, axis=1) 
+
+# Aplicar la fórmula y redondear hacia arriba los resultados
+df515['4.1.1'] = df515.apply(aplicar_formula16, axis=1).apply(np.ceil)
+'''
+
+
+df515 = df_DB.copy()
+
+def aplicar_formula16(row):
+    denominador = row['Column104']
+    
+    # Evitar la división por cero
+    if denominador == 0:
+        return 0
+    
+    numerador = ((row['Column103'] / denominador) - 1) * 100
+    
+    return numerador
+
+
+# Aplicar la fórmula y redondear hacia arriba los resultados
+df515['4.1.1'] = df515.apply(aplicar_formula16, axis=1).apply(np.ceil)
+
+
+# Normalizar la columna '3.1' entre 0 y 100 y eliminar decimales
+df515['4.1.1'] = round((df515['4.1.1'] - df515['4.1.1'].min()) / (df515['4.1.1'].max() - df515['4.1.1'].min()) * 100)
+
+# Asegurarse de que los valores estén en el rango correcto (0-100)
+df515['4.1.1'] = df515['4.1.1'].clip(0, 100)
+
 
 
 
 
 # Aplicar la fórmula para Indicador 4.1.2
-
+'''
 df516 = df_DB.copy()
 
 def aplicar_formula17(row):
-    denominador = row['Column105']
+    denominador = row['Column106']
     
     # Evitar la división por cero
     if denominador == 0:
         return 0
     
-    numerador = ((row['Column106'] / denominador) - 1) * 100
+    numerador = ((row['Column105'] / denominador) - 1) * 100
+    
+    return numerador
+
+df516['4.1.2'] = df516.apply(aplicar_formula17, axis=1) 
+'''
+
+
+df516 = df_DB.copy()
+
+def aplicar_formula17(row):
+    denominador = row['Column106']
+    
+    # Evitar la división por cero
+    if denominador == 0:
+        return 0
+    
+    numerador = ((row['Column105'] / denominador) - 1) * 100
     
     return numerador
 
 df516['4.1.2'] = df516.apply(aplicar_formula17, axis=1) 
 
 
+# Normalizar la columna '3.1' entre 0 y 100 y eliminar decimales
+df516['4.1.2'] = round((df516['4.1.2'] - df516['4.1.2'].min()) / (df516['4.1.2'].max() - df516['4.1.2'].min()) * 100)
+
+# Asegurarse de que los valores estén en el rango correcto (0-100)
+df516['4.1.2'] = df516['4.1.2'].clip(0, 100)
+
 
 
 # Aplicar la fórmula para Indicador 4.1.3
-
+'''
 df517 = df_DB.copy()
 
 def aplicar_formula18(row):
@@ -894,11 +1406,37 @@ def aplicar_formula18(row):
 
 df517['4.1.3'] = df517.apply(aplicar_formula18, axis=1) 
 
+'''
+
+df517 = df_DB.copy()
+
+def aplicar_formula18(row):
+    denominador = row['Column108']
+    
+    # Evitar la división por cero
+    if denominador == 0:
+        return 0
+    
+    numerador = ((row['Column107'] / denominador) - 1) * 100
+    
+    return numerador
+
+df517['4.1.3'] = df517.apply(aplicar_formula18, axis=1) 
+
+
+
+# Normalizar la columna '3.1' entre 0 y 100 y eliminar decimales
+df517['4.1.3'] = round((df517['4.1.3'] - df517['4.1.3'].min()) / (df517['4.1.3'].max() - df517['4.1.3'].min()) * 100)
+
+# Asegurarse de que los valores estén en el rango correcto (0-100)
+df517['4.1.3'] = df517['4.1.3'].clip(0, 100)
+
+
 
 
 
 # Aplicar la fórmula para Indicador 4.1.4
-
+'''
 df518 = df_DB.copy()
 
 def aplicar_formula19(row):
@@ -913,10 +1451,33 @@ def aplicar_formula19(row):
     return numerador
 
 df518['4.1.4'] = df518.apply(aplicar_formula19, axis=1) 
+'''
+
+df518 = df_DB.copy()
+
+def aplicar_formula19(row):
+    denominador = row['Column110']
+    
+    # Evitar la división por cero
+    if denominador == 0:
+        return 0
+    
+    numerador = ((row['Column109'] / denominador) - 1) * 100
+    
+    return numerador
+
+df518['4.1.4'] = df518.apply(aplicar_formula19, axis=1) 
+
+# Normalizar la columna '3.1' entre 0 y 100 y eliminar decimales
+df518['4.1.4'] = round((df518['4.1.4'] - df518['4.1.4'].min()) / (df518['4.1.4'].max() - df518['4.1.4'].min()) * 100)
+
+# Asegurarse de que los valores estén en el rango correcto (0-100)
+df518['4.1.4'] = df518['4.1.4'].clip(0, 100)
+
 
 
 # Aplicar la fórmula para Indicador 4.2.1
-
+'''
 df519 = df_DB.copy()
 
 def aplicar_formula20(row):
@@ -931,11 +1492,32 @@ def aplicar_formula20(row):
     return numerador
 
 df519['4.2.1'] = df519.apply(aplicar_formula20, axis=1) 
+'''
+df519 = df_DB.copy()
+
+def aplicar_formula20(row):
+    denominador = row['Column112']
+    
+    # Evitar la división por cero
+    if denominador == 0:
+        return 0
+    
+    numerador = ((row['Column111'] / denominador) - 1) * 100
+    
+    return numerador
+
+df519['4.2.1'] = df519.apply(aplicar_formula20, axis=1) 
+
+# Normalizar la columna '4.2.1' entre 0 y 100 y eliminar decimales
+df519['4.2.1'] = round((df519['4.2.1'] - df519['4.2.1'].min()) / (df519['4.2.1'].max() - df519['4.2.1'].min()) * 100)
+
+# Asegurarse de que los valores estén en el rango correcto (0-100)
+df519['4.2.1'] = df519['4.2.1'].clip(0, 100)
 
 
 
 # Aplicar la fórmula para Indicador 4.2.2
-
+'''
 df520 = df_DB.copy()
 
 def aplicar_formula21(row):
@@ -951,10 +1533,38 @@ def aplicar_formula21(row):
 
 df520['4.2.2'] = df520.apply(aplicar_formula21, axis=1) 
 
+'''
+
+df520 = df_DB.copy()
+
+def aplicar_formula21(row):
+    denominador = row['Column114']
+    
+    # Evitar la división por cero
+    if denominador == 0:
+        return 0
+    
+    numerador = ((row['Column113'] / denominador) - 1) * 100
+    
+    return numerador
+
+df520['4.2.2'] = df520.apply(aplicar_formula21, axis=1) 
+
+
+# Normalizar la columna '4.2.1' entre 0 y 100 y eliminar decimales
+df520['4.2.2'] = round((df520['4.2.2'] - df520['4.2.2'].min()) / (df520['4.2.2'].max() - df520['4.2.2'].min()) * 100)
+
+# Asegurarse de que los valores estén en el rango correcto (0-100)
+df520['4.2.2'] = df520['4.2.2'].clip(0, 100)
+
+
+
+
+
 
 
 # Aplicar la fórmula para Indicador 4.2.3
-
+'''
 df521 = df_DB.copy()
 
 def aplicar_formula22(row):
@@ -969,11 +1579,34 @@ def aplicar_formula22(row):
     return numerador
 
 df521['4.2.3'] = df521.apply(aplicar_formula22, axis=1) 
+'''
+df521 = df_DB.copy()
+
+def aplicar_formula22(row):
+    denominador = row['Column116']
+    
+    # Evitar la división por cero
+    if denominador == 0:
+        return 0
+    
+    numerador = ((row['Column115'] / denominador) - 1) * 100
+    
+    return numerador
+
+df521['4.2.3'] = df521.apply(aplicar_formula22, axis=1) 
+
+# Normalizar la columna '4.2.1' entre 0 y 100 y eliminar decimales
+df521['4.2.3'] = round((df521['4.2.3'] - df521['4.2.3'].min()) / (df521['4.2.3'].max() - df521['4.2.3'].min()) * 100)
+
+# Asegurarse de que los valores estén en el rango correcto (0-100)
+df521['4.2.3'] = df521['4.2.3'].clip(0, 100)
+
+
 
 
 
 # Aplicar la fórmula para Indicador 4.2.4
-
+'''
 df522 = df_DB.copy()
 
 def aplicar_formula23(row):
@@ -988,11 +1621,37 @@ def aplicar_formula23(row):
     return numerador
 
 df522['4.2.4'] = df522.apply(aplicar_formula23, axis=1) 
+'''
+df522 = df_DB.copy()
+
+def aplicar_formula23(row):
+    denominador = row['Column118']
+    
+    # Evitar la división por cero
+    if denominador == 0:
+        return 0
+    
+    numerador = ((row['Column117'] / denominador) - 1) * 100
+    
+    return numerador
+
+df522['4.2.4'] = df522.apply(aplicar_formula23, axis=1) 
+
+# Normalizar la columna '4.2.1' entre 0 y 100 y eliminar decimales
+df522['4.2.4'] = round((df522['4.2.4'] - df522['4.2.4'].min()) / (df522['4.2.4'].max() - df522['4.2.4'].min()) * 100)
+
+# Asegurarse de que los valores estén en el rango correcto (0-100)
+df522['4.2.4'] = df522['4.2.4'].clip(0, 100)
+
+
+
+
+
 
 
 
 # Aplicar la fórmula para Indicador 4.2.5
-
+'''
 df523 = df_DB.copy()
 
 def aplicar_formula24(row):
@@ -1008,11 +1667,38 @@ def aplicar_formula24(row):
 
 df523['4.2.5'] = df523.apply(aplicar_formula24, axis=1) 
 
+'''
+
+
+df523 = df_DB.copy()
+
+def aplicar_formula24(row):
+    denominador = row['Column124']
+    
+    # Evitar la división por cero
+    if denominador == 0:
+        return 0
+    
+    numerador = (((row['Column121'] / denominador) - 1) * 100)
+    
+    return numerador
+
+df523['4.2.5'] = df523.apply(aplicar_formula24, axis=1) 
+
+
+
+# Normalizar la columna '4.2.1' entre 0 y 100 y eliminar decimales
+df523['4.2.5'] = round((df523['4.2.5'] - df523['4.2.5'].min()) / (df523['4.2.5'].max() - df523['4.2.5'].min()) * 100)
+
+# Asegurarse de que los valores estén en el rango correcto (0-100)
+df523['4.2.5'] = df523['4.2.5'].clip(0, 100)
+
+
 
 
 
 # Aplicar la fórmula para Indicador 4.2.6
-
+'''
 df524 = df_DB.copy()
 
 def aplicar_formula25(row):
@@ -1027,17 +1713,54 @@ def aplicar_formula25(row):
     return numerador
 
 df524['4.2.6'] = df524.apply(aplicar_formula25, axis=1) 
+'''
+
+df524 = df_DB.copy()
+
+def aplicar_formula25(row):
+    denominador = row['Column130']
+    
+    # Evitar la división por cero
+    if denominador == 0:
+        return 0
+    
+    numerador = (((row['Column127'] / denominador) - 1) * 100)
+    
+    return numerador
+
+df524['4.2.6'] = df524.apply(aplicar_formula25, axis=1) 
+# Normalizar la columna '4.2.1' entre 0 y 100 y eliminar decimales
+df524['4.2.6'] = round((df524['4.2.6'] - df524['4.2.6'].min()) / (df524['4.2.6'].max() - df524['4.2.6'].min()) * 100)
+
+# Asegurarse de que los valores estén en el rango correcto (0-100)
+df524['4.2.6'] = df524['4.2.6'].clip(0, 100)
 
 
-# Aplicar la fórmula para Indicador 5.1
+# Aplicar la fórmula para Indicador 5.1 es Column131
 
 df525 = df_DB.copy()
+
+
+if 'Column131' in df525.columns:
+    # Normalizar la columna 'Column131' entre 0 y 100 y eliminar decimales
+    df525['Column131'] = round((df525['Column131'] - df525['Column131'].min()) / (df525['Column131'].max() - df525['Column131'].min()) * 100)
+
+    # Asegurarse de que los valores estén en el rango correcto (0-100)
+    df525['Column131'] = df525['Column131'].clip(0, 100)
+
+    # Renombrar la columna a '5.1'
+    df525 = df525.rename(columns={'Column131': '5.1'})
+
+
+
+
+
 
 
 
 
 # Aplicar la fórmula para Indicador 6.1
-
+'''
 df526 = df_DB.copy()
 
 def aplicar_formula26(row):
@@ -1056,9 +1779,40 @@ def aplicar_formula26(row):
 
 df526['6.1'] = df526.apply(aplicar_formula26, axis=1)
 
+'''
+
+df526 = df_DB.copy()
+
+def aplicar_formula26(row):
+    denominador_parte1 = row['Column135']
+    denominador_parte2 = row['Column139']
+    
+    # Evitar la división por cero
+    if denominador_parte1 == 0 or denominador_parte2 == 0:
+        return 0
+    
+    numerador = (row['Column132'] + row['Column133'] - row['Column134']) / denominador_parte1
+    denominador = (row['Column136'] + row['Column137'] - row['Column138']) / denominador_parte2
+    
+    resultado = ((numerador / denominador) - 1) * 100
+    
+    
+    return 1 - resultado
+
+df526['6.1'] = df526.apply(aplicar_formula26, axis=1)
+
+
+
+# Normalizar la columna '4.2.1' entre 0 y 100 y eliminar decimales
+df526['6.1'] = round((df526['6.1'] - df526['6.1'].min()) / (df526['6.1'].max() - df526['6.1'].min()) * 100)
+
+# Asegurarse de que los valores estén en el rango correcto (0-100)
+df526['6.1'] = df526['6.1'].clip(0, 100)
+
+
 
 # Aplicar la fórmula para Indicador 6.2
-
+'''
 df527 = df_DB.copy()
 
 def aplicar_formula27(row):
@@ -1077,11 +1831,53 @@ def aplicar_formula27(row):
 
 df527['6.2'] = df527.apply(aplicar_formula27, axis=1)
 
+'''
+
+df527 = df_DB.copy()
+
+def aplicar_formula27(row):
+    denominador_parte1 = row['Column143']
+    denominador_parte2 = row['Column147']
+    
+    # Evitar la división por cero
+    if denominador_parte1 == 0 or denominador_parte2 == 0:
+        return 0
+    
+    numerador = (row['Column140'] + row['Column141'] - row['Column142']) / denominador_parte1
+    denominador = (row['Column144'] + row['Column145'] - row['Column146']) / denominador_parte2
+    
+    resultado = ((numerador / denominador) - 1) * 100
+    return 1 - resultado
+
+df527['6.2'] = df527.apply(aplicar_formula27, axis=1)
+
+# Normalizar la columna '4.2.1' entre 0 y 100 y eliminar decimales
+df527['6.2'] = round((df527['6.2'] - df527['6.2'].min()) / (df527['6.2'].max() - df527['6.2'].min()) * 100)
+
+# Asegurarse de que los valores estén en el rango correcto (0-100)
+df527['6.2'] = df527['6.2'].clip(0, 100)
+
+
 
 
 
 # Aplicar la fórmula para Indicador 7.1.1
+'''
+df528 = df_DB.copy()
 
+def aplicar_formula28(row):
+    numerador = row['Column39'] - row['Column148']
+    denominador = row['Column148']
+    
+    # Evitar la división por cero
+    if denominador == 0:
+        return 0
+    
+    resultado = (numerador / denominador) * 100
+    return resultado
+
+df528['7.1.1'] = df528.apply(aplicar_formula28, axis=1)
+'''
 df528 = df_DB.copy()
 
 def aplicar_formula28(row):
@@ -1097,9 +1893,18 @@ def aplicar_formula28(row):
 
 df528['7.1.1'] = df528.apply(aplicar_formula28, axis=1)
 
-    
-# Aplicar la fórmula para Indicador 7.2.1
 
+# Normalizar la columna '2.2' entre 0 y 100 y eliminar decimales
+df528['7.1.1'] = round((df528['7.1.1'] - df528['7.1.1'].min()) / (df528['7.1.1'].max() - df528['7.1.1'].min()) * 100)
+
+# Asegurarse de que los valores estén en el rango correcto (0-100)
+df528['7.1.1'] = df528['7.1.1'].clip(0, 100)
+
+
+
+
+# Aplicar la fórmula para Indicador 7.2.1
+'''
 df529 = df_DB.copy()
 
 def aplicar_formula29(row):
@@ -1114,10 +1919,51 @@ def aplicar_formula29(row):
     return resultado
 
 df529['7.2.1'] = df529.apply(aplicar_formula29, axis=1)
+    '''
+    
+    df529 = df_DB.copy()
+
+    def aplicar_formula29(row):
+        numerador = row['Column42'] - row['Column149']
+        denominador = row['Column149']
+        
+        # Evitar la división por cero
+        if denominador == 0:
+            return 0
+        
+        resultado = (numerador / denominador) * 100
+        return resultado
+
+    df529['7.2.1'] = df529.apply(aplicar_formula29, axis=1)
+    
+    
+    # Normalizar la columna '2.2' entre 0 y 100 y eliminar decimales
+    df529['7.2.1'] = round((df529['7.2.1'] - df529['7.2.1'].min()) / (df529['7.2.1'].max() - df529['7.2.1'].min()) * 100)
+
+    # Asegurarse de que los valores estén en el rango correcto (0-100)
+    df529['7.2.1'] = df529['7.2.1'].clip(0, 100)
+
+
+    
+    
+    
+    
+    
     
     
 # Aplicar la fórmula para Indicador 7.3.1
+    '''
+df530 = df_DB.copy()
+
+def aplicar_formula30(row):
+    numerador = (row['Column150'] / row['Column151'] - 1) *100
     
+    return numerador
+
+df530['7.3.1'] = df530.apply(aplicar_formula30, axis=1)
+'''
+
+
 df530 = df_DB.copy()
 
 def aplicar_formula30(row):
@@ -1128,8 +1974,26 @@ def aplicar_formula30(row):
 df530['7.3.1'] = df530.apply(aplicar_formula30, axis=1)
 
 
-# Aplicar la fórmula para Indicador 7.3.2
+# Normalizar la columna '2.2' entre 0 y 100 y eliminar decimales
+df530['7.3.1'] = round((df530['7.3.1'] - df530['7.3.1'].min()) / (df530['7.3.1'].max() - df530['7.3.1'].min()) * 100)
 
+# Asegurarse de que los valores estén en el rango correcto (0-100)
+df530['7.3.1'] = df530['7.3.1'].clip(0, 100)
+
+
+
+
+# Aplicar la fórmula para Indicador 7.3.2
+'''
+df531 = df_DB.copy()
+
+def aplicar_formula31(row):
+    numerador = (row['Column152'] / row['Column153'] - 1) * 100
+    
+    return numerador
+
+df531['7.3.2'] = df531.apply(aplicar_formula31, axis=1)
+'''
 df531 = df_DB.copy()
 
 def aplicar_formula31(row):
@@ -1141,7 +2005,30 @@ df531['7.3.2'] = df531.apply(aplicar_formula31, axis=1)
 
 
 
+
+# Normalizar la columna '2.2' entre 0 y 100 y eliminar decimales
+df531['7.3.2'] = round((df531['7.3.2'] - df531['7.3.2'].min()) / (df531['7.3.2'].max() - df531['7.3.2'].min()) * 100)
+
+# Asegurarse de que los valores estén en el rango correcto (0-100)
+df531['7.3.2'] = df531['7.3.2'].clip(0, 100)
+
+
+
+
+
+
+
 # Aplicar la fórmula para Indicador 7.3.3
+'''
+df532 = df_DB.copy()
+
+def aplicar_formula32(row):
+    numerador = (row['Column154'] / row['Column155'] - 1) * 100
+    
+    return numerador
+
+df532['7.3.3'] = df532.apply(aplicar_formula32, axis=1)
+'''
 
 df532 = df_DB.copy()
 
@@ -1153,9 +2040,35 @@ def aplicar_formula32(row):
 df532['7.3.3'] = df532.apply(aplicar_formula32, axis=1)
 
 
+# Normalizar la columna '2.2' entre 0 y 100 y eliminar decimales
+df532['7.3.3'] = round((df532['7.3.3'] - df532['7.3.3'].min()) / (df532['7.3.3'].max() - df532['7.3.3'].min()) * 100)
+
+# Asegurarse de que los valores estén en el rango correcto (0-100)
+df532['7.3.3'] = df532['7.3.3'].clip(0, 100)
+
+
+
+
 
 
 # Aplicar la fórmula para Indicador 7.3.4
+'''
+df533 = df_DB.copy()
+
+def aplicar_formula33(row):
+    denominador = row['Column157']
+    
+    # Evitar la división por cero
+    if denominador == 0:
+        return 0  # Puedes ajustar esto según tus necesidades
+    
+    numerador = (row['Column156'] / denominador - 1) * 100
+    
+    return numerador
+
+df533['7.3.4'] = df533.apply(aplicar_formula33, axis=1)
+'''
+
 
 df533 = df_DB.copy()
 
@@ -1172,23 +2085,60 @@ def aplicar_formula33(row):
 
 df533['7.3.4'] = df533.apply(aplicar_formula33, axis=1)
 
+# Normalizar la columna '2.2' entre 0 y 100 y eliminar decimales
+df533['7.3.4'] = round((df533['7.3.4'] - df533['7.3.4'].min()) / (df533['7.3.4'].max() - df533['7.3.4'].min()) * 100)
+
+# Asegurarse de que los valores estén en el rango correcto (0-100)
+df533['7.3.4'] = df533['7.3.4'].clip(0, 100)
+
+
+
+
+
+
 
 # Aplicar la fórmula para Indicador 7.4.1
-
+'''
 df534 = df_DB.copy()
 
 def aplicar_formula34(row):
-    denominador = row['Column158']
+    denominador = row['Column159']
     
     # Evitar la división por cero
     if denominador == 0:
         return 0  # Puedes ajustar esto según tus necesidades
     
-    numerador = (row['Column159'] / denominador - 1) * 100
+    numerador = (row['Column158'] / denominador - 1) * 100
     
     return numerador
 
 df534['7.4.1'] = df534.apply(aplicar_formula34, axis=1)
+
+'''
+df534 = df_DB.copy()
+
+def aplicar_formula34(row):
+    denominador = row['Column159']
+    
+    # Evitar la división por cero
+    if denominador == 0:
+        return 0  # Puedes ajustar esto según tus necesidades
+    
+    numerador = (row['Column158'] / denominador - 1) * 100
+    
+    return numerador
+
+df534['7.4.1'] = df534.apply(aplicar_formula34, axis=1)
+
+# Normalizar la columna '2.2' entre 0 y 100 y eliminar decimales
+df534['7.4.1'] = round((df534['7.4.1'] - df534['7.4.1'].min()) / (df534['7.4.1'].max() - df534['7.4.1'].min()) * 100)
+
+# Asegurarse de que los valores estén en el rango correcto (0-100)
+df534['7.4.1'] = df534['7.4.1'].clip(0, 100)
+
+
+
+
 
 
 
@@ -1211,7 +2161,8 @@ IC = pd.concat([
     df511.set_index('Column1')['1.2.2'],
     df512.set_index('Column1')['2.1'],
     df513.set_index('Column1')['2.2'],
-    df514.set_index('Column1')['3.2'],
+    df513_1.set_index('Column1')['2.3'],
+    df514.set_index('Column1')['3.1'],
     df515.set_index('Column1')['4.1.1'],
     df516.set_index('Column1')['4.1.2'],
     df517.set_index('Column1')['4.1.3'],
@@ -1222,7 +2173,7 @@ IC = pd.concat([
     df522.set_index('Column1')['4.2.4'],
     df523.set_index('Column1')['4.2.5'],
     df524.set_index('Column1')['4.2.6'],
-    df525.set_index('Column1')['Column131'],
+    df525.set_index('Column1')['5.1'],
     df526.set_index('Column1')['6.1'],
     df527.set_index('Column1')['6.2'],
     df528.set_index('Column1')['7.1.1'],
@@ -1236,9 +2187,6 @@ IC = pd.concat([
     
     
 ], axis=1)
-
-
-
 
 
 
