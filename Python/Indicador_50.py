@@ -1,8 +1,8 @@
 
+import tkinter as tk
+from tkinter import filedialog
 import pandas as pd
-import csv
 import numpy as np
-
 from scipy.stats import trim_mean
 
 
@@ -2944,11 +2944,11 @@ IC_1 = pd.concat([
     df502_A.set_index('Column1')['1.1.1.3'],
     df503_A.set_index('Column1')['1.1.1.4'],
     df504_A.set_index('Column1')['1.1.1.5'],
-    df505_A.set_index('Column1')['1.1.2.1'],
-    df506_A.set_index('Column1')['1.1.2.2'],
-    df507_A.set_index('Column1')['1.1.2.3'],
-    df508_A.set_index('Column1')['1.1.2.4'],
-    df509_A.set_index('Column1')['1.1.2.5'],
+    df505.set_index('Column1')['1.1.2.1'],
+    df506.set_index('Column1')['1.1.2.2'],
+    df507.set_index('Column1')['1.1.2.3'],
+    df508.set_index('Column1')['1.1.2.4'],
+    df509.set_index('Column1')['1.1.2.5'],
     df510_A.set_index('Column1')['1.2.1'],
     df511_A.set_index('Column1')['1.2.2'],
     df512_A.set_index('Column1')['2.1'],
@@ -2978,6 +2978,9 @@ IC_1 = pd.concat([
     
     
 ], axis=1)
+
+
+
 
 
 
@@ -3020,8 +3023,6 @@ for columna in IC_1.columns:
     if columna != IC_1.index.name:
         # Calcular la media acotada y agregar la fila "Valor de referencia"
         IC_1.loc["Valor de referencia", columna] = calcular_media_acotada(IC_1[columna])
-
-
 
 
 
@@ -3078,7 +3079,26 @@ IC = pd.concat([
     
 ], axis=1)
 
+
+
+
+
+# Iterar sobre todas las columnas de IC
+for columna in IC.columns:
+    # Verificar si la columna no es la columna de índice
+    if columna != IC.index.name:
+        # Calcular la media acotada y agregar la fila "Valor de referencia"
+        IC.loc["Valor de referencia", columna] = calcular_media_acotada(IC[columna])
+
+
+
+
+
+
+
 IC_final = pd.merge(IC, IC_1, on=['Column1', 'Column2', 'Column3'], how='inner')
+
+
 
 
 # Definir la función para calcular la media acotada
@@ -3135,3 +3155,96 @@ for columna in columnas_a_normalizar:
 IC_final[columnas_a_normalizar] = IC_final[columnas_a_normalizar].clip(0, 100)
 
 
+
+
+
+
+
+
+
+
+
+#######################################Calificación final 
+
+
+#Valor de referencia
+df800_A = IC_final.copy()
+
+# Multiplicar la celda específica por 0.10
+df800_A.loc['Valor de referencia', 'IEB'] *= 10
+
+
+
+
+
+
+# Calificación (0-10)
+df801_A = df_DB.copy()
+
+def aplicar_formula801_A(row):
+    ieb =  df800_A.loc['Valor de referencia', 'IEB']
+    c52 = df500_111.loc[row.name, 'IEB']
+
+    try:
+        resultado = min(((ieb * 10) * 6) / c52, 10)
+    except ZeroDivisionError:
+        resultado = 0
+    
+    return resultado
+
+df801_A ['Calificación (0-10)'] = df801_A.apply(aplicar_formula801_A, axis=1)
+
+
+# Punto extra (0-1)
+df802_A = df_DB.copy()
+
+def aplicar_formula802_A(row):
+    valor_columna_7 = df500_700.loc[row.name, '7.']
+    c53 = df500_111.loc[row.name, 'IEB']
+
+    try:
+        resultado = min((valor_columna_7 * 6) / c53, 1, 0)
+    except ZeroDivisionError:
+        resultado = 0
+    
+    return resultado
+
+df802_A['Punto extra (0-1)'] = df802_A.apply(aplicar_formula802_A, axis=1)
+
+
+
+
+# Calificación final (0-10)
+df803_A = df_DB.copy()
+
+def aplicar_formula803_A(row):
+    calificacion_0_10 = df801_A.loc[row.name, 'Calificación (0-10)']
+    punto_extra_0_1 = df802_A.loc[row.name, 'Punto extra (0-1)']
+
+    resultado = min(calificacion_0_10 + punto_extra_0_1, 10)
+    return resultado
+
+df803_A['Calificación final (0-10)'] = df803_A.apply(aplicar_formula803_A, axis=1)
+
+
+
+
+# Crear un nuevo DataFrame Calificación final
+CI = pd.concat([
+    df500.set_index('Column1')['Column2'],
+    df500.set_index('Column1')['Column3'],
+    df801_A.set_index('Column1')['Calificación (0-10)'],
+    df802_A.set_index('Column1')['Punto extra (0-1)'],
+    df803_A.set_index('Column1')['Calificación final (0-10)'],
+], axis=1)
+
+
+
+
+
+# Guardar el DataFrame concatenado en un archivo Excel hoja Ponderación 
+IC_final.to_excel(r"C:\Users\crist\OneDrive\Documentos\Cristhian\Cristhian\CRISS\Allcot\DocumentosProyectos\python-sharepoint-office365-api-main\ARCHIVOS\Anexo IEB\MergeTotal\Ponderacion.xlsx", sheet_name='pag', engine = 'openpyxl')
+
+
+# Guardar el DataFrame concatenado en un archivo Excel hoja Calificación final 
+CI.to_excel(r"C:\Users\crist\OneDrive\Documentos\Cristhian\Cristhian\CRISS\Allcot\DocumentosProyectos\python-sharepoint-office365-api-main\ARCHIVOS\Anexo IEB\MergeTotal\CalificacionFINAL.xlsx", sheet_name='pag', engine = 'openpyxl')
