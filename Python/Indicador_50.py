@@ -6,6 +6,10 @@ import numpy as np
 from scipy.stats import trim_mean
 
 
+
+
+    
+
 #Ruta archivo BD para Indicadores Cálculos
 ruta_archivo_excel50 = r"C:\Users\crist\OneDrive\Documentos\Cristhian\Cristhian\CRISS\Allcot\DocumentosProyectos\python-sharepoint-office365-api-main\ARCHIVOS\Anexo IEB\MergeTotal\MergeTotalF.xlsx"
 
